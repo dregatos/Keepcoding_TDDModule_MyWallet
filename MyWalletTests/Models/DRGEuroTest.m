@@ -50,4 +50,15 @@
     XCTAssertNotEqualObjects(zero, nil, @"0€ should be different to nil");
 }
 
+- (void)testHash {
+    
+    DRGEuro *five1 = [[DRGEuro alloc] initWithAmount:5];
+    DRGEuro *five2 = [[DRGEuro alloc] initWithAmount:5];
+    
+    DRGEuro *ten = [[DRGEuro alloc] initWithAmount:10];
+    
+    XCTAssertEqual([five1 hash], [five2 hash], @"Equal objects must have same hash");
+    XCTAssertNotEqual([five1 hash], [ten hash], @"Different objects must have different hash");
+}
+
 @end

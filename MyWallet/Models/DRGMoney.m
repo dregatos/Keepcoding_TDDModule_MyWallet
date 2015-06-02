@@ -31,4 +31,26 @@
     return [self subclassResponsability:_cmd];
 }
 
+#pragma mark - Overwritten
+
+- (NSString *)description {
+    NSString *objDescription = [NSString stringWithFormat:@"%ld", (long)self.amount]; //Wrap the custom description here.
+    return [NSString stringWithFormat:@"<%@: %@>", [self class], objDescription];
+}
+
+- (BOOL)isEqual:(id)object {
+    
+    if (self && object) {
+        return  [self amount] == [object amount];
+    }
+    
+    return NO;
+}
+
+- (NSUInteger)hash {
+    
+    return [self amount];
+}
+
+
 @end
