@@ -14,6 +14,6 @@
 
 - (instancetype)initWithAmount:(NSInteger)amount;
 
-- (void)times:(NSInteger)multiplier;
+- (DRGEuro *)times:(NSInteger)multiplier;
 
 @end
