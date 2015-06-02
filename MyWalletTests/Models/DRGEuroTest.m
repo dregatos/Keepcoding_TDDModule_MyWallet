@@ -28,10 +28,12 @@
 
 - (void)testMultiplication {
     
-    DRGEuro *euro = [[DRGEuro alloc] initWithAmount:5];
-    DRGEuro *total = [euro times:2];
+    DRGEuro *five = [[DRGEuro alloc] initWithAmount:5];
+    DRGEuro *ten = [[DRGEuro alloc] initWithAmount:10];
+
+    DRGEuro *fiveTimesTwo = [five times:2];
     
-    XCTAssertEqual(total.amount, 10, @"5euros*2 should be 10euros");
+    XCTAssertEqualObjects(fiveTimesTwo, ten, @"5euros*2 should be 10euros");
 }
 
 - (void)testEquality {

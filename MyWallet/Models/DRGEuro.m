@@ -10,7 +10,7 @@
 
 @interface DRGEuro ()
 
-@property (nonatomic,readwrite) NSInteger amount;
+@property (nonatomic) NSInteger amount;
 
 @end
 

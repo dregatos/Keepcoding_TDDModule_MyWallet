@@ -10,10 +10,7 @@
 
 @interface DRGEuro : NSObject
 
-@property (nonatomic,readonly) NSInteger amount;
-
 - (instancetype)initWithAmount:(NSInteger)amount;
-
 - (DRGEuro *)times:(NSInteger)multiplier;
 
 @end
