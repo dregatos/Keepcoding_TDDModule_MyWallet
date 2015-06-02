@@ -17,6 +17,9 @@
 		07699A4E1B1DA1830094D39F /* DRGEuro.m in Sources */ = {isa = PBXBuildFile; fileRef = 07699A4D1B1DA1830094D39F /* DRGEuro.m */; };
 		07699A501B1DB1820094D39F /* DRGDollarTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 07699A4F1B1DB1820094D39F /* DRGDollarTest.m */; };
 		07699A531B1DB2250094D39F /* DRGDollar.m in Sources */ = {isa = PBXBuildFile; fileRef = 07699A521B1DB2250094D39F /* DRGDollar.m */; };
+		07699A561B1DB5930094D39F /* DRGMoney.m in Sources */ = {isa = PBXBuildFile; fileRef = 07699A551B1DB5930094D39F /* DRGMoney.m */; };
+		07699A5A1B1DBE200094D39F /* NSObject+GNUStepAddons.m in Sources */ = {isa = PBXBuildFile; fileRef = 07699A591B1DBE200094D39F /* NSObject+GNUStepAddons.m */; };
+		07699A5C1B1DC14C0094D39F /* DRGMoneyTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 07699A5B1B1DC14C0094D39F /* DRGMoneyTest.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +51,11 @@
 		07699A4F1B1DB1820094D39F /* DRGDollarTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DRGDollarTest.m; sourceTree = "<group>"; };
 		07699A511B1DB2250094D39F /* DRGDollar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DRGDollar.h; sourceTree = "<group>"; };
 		07699A521B1DB2250094D39F /* DRGDollar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DRGDollar.m; sourceTree = "<group>"; };
+		07699A541B1DB5930094D39F /* DRGMoney.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DRGMoney.h; sourceTree = "<group>"; };
+		07699A551B1DB5930094D39F /* DRGMoney.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DRGMoney.m; sourceTree = "<group>"; };
+		07699A581B1DBE200094D39F /* NSObject+GNUStepAddons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+GNUStepAddons.h"; sourceTree = "<group>"; };
+		07699A591B1DBE200094D39F /* NSObject+GNUStepAddons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+GNUStepAddons.m"; sourceTree = "<group>"; };
+		07699A5B1B1DC14C0094D39F /* DRGMoneyTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DRGMoneyTest.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +105,7 @@
 				07699A2F1B1CF3EA0094D39F /* Images.xcassets */,
 				07699A311B1CF3EA0094D39F /* LaunchScreen.xib */,
 				07699A4B1B1DA1580094D39F /* Models */,
+				07699A571B1DBC200094D39F /* Categorias */,
 				07699A221B1CF3E60094D39F /* Supporting Files */,
 			);
 			path = MyWallet;
@@ -133,6 +142,7 @@
 			children = (
 				07699A491B1DA0840094D39F /* DRGEuroTest.m */,
 				07699A4F1B1DB1820094D39F /* DRGDollarTest.m */,
+				07699A5B1B1DC14C0094D39F /* DRGMoneyTest.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -144,8 +154,19 @@
 				07699A4D1B1DA1830094D39F /* DRGEuro.m */,
 				07699A511B1DB2250094D39F /* DRGDollar.h */,
 				07699A521B1DB2250094D39F /* DRGDollar.m */,
+				07699A541B1DB5930094D39F /* DRGMoney.h */,
+				07699A551B1DB5930094D39F /* DRGMoney.m */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		07699A571B1DBC200094D39F /* Categorias */ = {
+			isa = PBXGroup;
+			children = (
+				07699A581B1DBE200094D39F /* NSObject+GNUStepAddons.h */,
+				07699A591B1DBE200094D39F /* NSObject+GNUStepAddons.m */,
+			);
+			path = Categorias;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -248,7 +269,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				07699A561B1DB5930094D39F /* DRGMoney.m in Sources */,
 				07699A4E1B1DA1830094D39F /* DRGEuro.m in Sources */,
+				07699A5A1B1DBE200094D39F /* NSObject+GNUStepAddons.m in Sources */,
 				07699A2B1B1CF3E90094D39F /* ViewController.m in Sources */,
 				07699A531B1DB2250094D39F /* DRGDollar.m in Sources */,
 				07699A281B1CF3E90094D39F /* AppDelegate.m in Sources */,
@@ -260,6 +283,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				07699A5C1B1DC14C0094D39F /* DRGMoneyTest.m in Sources */,
 				07699A4A1B1DA0840094D39F /* DRGEuroTest.m in Sources */,
 				07699A501B1DB1820094D39F /* DRGDollarTest.m in Sources */,
 			);

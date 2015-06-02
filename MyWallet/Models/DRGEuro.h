@@ -6,9 +6,10 @@
 //  Copyright (c) 2015 DRG. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+@import Foundation;
+#import "DRGMoney.h"
 
-@interface DRGEuro : NSObject
+@interface DRGEuro : DRGMoney
 
 - (instancetype)initWithAmount:(NSInteger)amount;
 - (DRGEuro *)times:(NSInteger)multiplier;
