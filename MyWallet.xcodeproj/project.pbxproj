@@ -15,6 +15,8 @@
 		07699A331B1CF3EA0094D39F /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07699A311B1CF3EA0094D39F /* LaunchScreen.xib */; };
 		07699A4A1B1DA0840094D39F /* DRGEuroTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 07699A491B1DA0840094D39F /* DRGEuroTest.m */; };
 		07699A4E1B1DA1830094D39F /* DRGEuro.m in Sources */ = {isa = PBXBuildFile; fileRef = 07699A4D1B1DA1830094D39F /* DRGEuro.m */; };
+		07699A501B1DB1820094D39F /* DRGDollarTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 07699A4F1B1DB1820094D39F /* DRGDollarTest.m */; };
+		07699A531B1DB2250094D39F /* DRGDollar.m in Sources */ = {isa = PBXBuildFile; fileRef = 07699A521B1DB2250094D39F /* DRGDollar.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +45,9 @@
 		07699A491B1DA0840094D39F /* DRGEuroTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DRGEuroTest.m; sourceTree = "<group>"; };
 		07699A4C1B1DA1830094D39F /* DRGEuro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DRGEuro.h; sourceTree = "<group>"; };
 		07699A4D1B1DA1830094D39F /* DRGEuro.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DRGEuro.m; sourceTree = "<group>"; };
+		07699A4F1B1DB1820094D39F /* DRGDollarTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DRGDollarTest.m; sourceTree = "<group>"; };
+		07699A511B1DB2250094D39F /* DRGDollar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DRGDollar.h; sourceTree = "<group>"; };
+		07699A521B1DB2250094D39F /* DRGDollar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DRGDollar.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +132,7 @@
 			isa = PBXGroup;
 			children = (
 				07699A491B1DA0840094D39F /* DRGEuroTest.m */,
+				07699A4F1B1DB1820094D39F /* DRGDollarTest.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -136,6 +142,8 @@
 			children = (
 				07699A4C1B1DA1830094D39F /* DRGEuro.h */,
 				07699A4D1B1DA1830094D39F /* DRGEuro.m */,
+				07699A511B1DB2250094D39F /* DRGDollar.h */,
+				07699A521B1DB2250094D39F /* DRGDollar.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -242,6 +250,7 @@
 			files = (
 				07699A4E1B1DA1830094D39F /* DRGEuro.m in Sources */,
 				07699A2B1B1CF3E90094D39F /* ViewController.m in Sources */,
+				07699A531B1DB2250094D39F /* DRGDollar.m in Sources */,
 				07699A281B1CF3E90094D39F /* AppDelegate.m in Sources */,
 				07699A251B1CF3E90094D39F /* main.m in Sources */,
 			);
@@ -252,6 +261,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				07699A4A1B1DA0840094D39F /* DRGEuroTest.m in Sources */,
+				07699A501B1DB1820094D39F /* DRGDollarTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

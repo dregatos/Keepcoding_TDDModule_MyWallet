@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
+
 #import "DRGEuro.h"
 
 @interface DRGEuroTest : XCTestCase
@@ -26,14 +27,14 @@
     [super tearDown];
 }
 
-- (void)testMultiplication {
+- (void)testMultiplication { // depends on testEquality
     
     DRGEuro *five = [[DRGEuro alloc] initWithAmount:5];
     DRGEuro *ten = [[DRGEuro alloc] initWithAmount:10];
 
     DRGEuro *fiveTimesTwo = [five times:2];
     
-    XCTAssertEqualObjects(fiveTimesTwo, ten, @"5euros*2 should be 10euros");
+    XCTAssertEqualObjects(fiveTimesTwo, ten, @"5€*2 should be 10€");
 }
 
 - (void)testEquality {
@@ -44,9 +45,9 @@
     DRGEuro *five = [[DRGEuro alloc] initWithAmount:5];
     DRGEuro *fiveTimesTwo = [five times:2];
     
-    XCTAssertEqualObjects(ten, fiveTimesTwo, @"10euros should be equal to 5euros * 2");
-    XCTAssertNotEqualObjects(ten, five, @"10euros should be different to 5euros");
-    XCTAssertNotEqualObjects(zero, nil, @"0euros should be different to nil");
+    XCTAssertEqualObjects(ten, fiveTimesTwo, @"10€ should be equal to 5€ * 2");
+    XCTAssertNotEqualObjects(ten, five, @"10€ should be different to 5€");
+    XCTAssertNotEqualObjects(zero, nil, @"0€ should be different to nil");
 }
 
 @end
