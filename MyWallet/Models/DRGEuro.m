@@ -30,4 +30,16 @@
 }
 
 
+#pragma mark - Overwritten
+
+- (BOOL)isEqual:(id)object {
+    
+    if (self && object) {
+        return  [self amount] == [object amount];
+    }
+    
+    return NO;
+}
+
+
 @end

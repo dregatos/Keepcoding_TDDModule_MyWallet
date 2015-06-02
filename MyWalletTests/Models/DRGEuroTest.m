@@ -31,7 +31,20 @@
     DRGEuro *euro = [[DRGEuro alloc] initWithAmount:5];
     DRGEuro *total = [euro times:2];
     
-    XCTAssertEqual(total.amount, 10, @"5*2 should be 10");
+    XCTAssertEqual(total.amount, 10, @"5euros*2 should be 10euros");
+}
+
+- (void)testEquality {
+    
+    DRGEuro *zero = [[DRGEuro alloc] initWithAmount:0];
+    DRGEuro *ten = [[DRGEuro alloc] initWithAmount:10];
+    
+    DRGEuro *five = [[DRGEuro alloc] initWithAmount:5];
+    DRGEuro *fiveTimesTwo = [five times:2];
+    
+    XCTAssertEqualObjects(ten, fiveTimesTwo, @"10euros should be equal to 5euros * 2");
+    XCTAssertNotEqualObjects(ten, five, @"10euros should be different to 5euros");
+    XCTAssertNotEqualObjects(zero, nil, @"0euros should be different to nil");
 }
 
 @end
