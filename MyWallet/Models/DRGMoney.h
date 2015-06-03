@@ -12,7 +12,15 @@
 
 @interface DRGMoney : NSObject
 
-- (instancetype)initWithAmount:(NSInteger)amount;
+@property (nonatomic, readonly) NSString *currency;
+
++ (id)euroWithAmount:(NSInteger)amount;
++ (id)dollarWithAmount:(NSInteger)amount;
+
+- (instancetype)initWithAmount:(NSInteger)amount andCurrency:(NSString *)currency;
+
+// Operations
 - (DRGMoney *)times:(NSInteger)multiplier;
+- (DRGMoney *)plus:(DRGMoney *)other;
 
 @end

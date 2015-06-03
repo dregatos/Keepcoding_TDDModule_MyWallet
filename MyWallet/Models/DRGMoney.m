@@ -11,25 +11,47 @@
 
 @interface DRGMoney ()
 
-@property (nonatomic) NSInteger amount;
+@property (nonatomic, strong) NSString *currency;
+@property (nonatomic, strong) NSNumber *amount;
 
 @end
 
 @implementation DRGMoney
 
-- (instancetype)initWithAmount:(NSInteger)amount {
+#pragma mark - init
+
++ (id)euroWithAmount:(NSInteger)amount {
+    return [[DRGMoney alloc] initWithAmount:amount andCurrency:@"EUR"];
+}
+
++ (id)dollarWithAmount:(NSInteger)amount {
+    return [[DRGMoney alloc] initWithAmount:amount andCurrency:@"USD"];
+}
+
+- (instancetype)initWithAmount:(NSInteger)amount andCurrency:(NSString *)currency {
     
     if (self = [super init]) {
-        _amount = amount;
+        _amount = @(amount);
+        _currency = currency;
     }
     return self;
 }
 
+#pragma mark - Operations
+
 - (DRGMoney *)times:(NSInteger)multiplier {
     
-    // Mustn't be called. NEVER. Must be handled by the subclass
-    return [self subclassResponsability:_cmd];
+    DRGMoney *new = [[DRGMoney alloc] initWithAmount:[self.amount integerValue] * multiplier andCurrency:self.currency];
+    return new;
 }
+
+- (DRGMoney *)plus:(DRGMoney *)other {
+    
+    NSInteger totalAmount = [self.amount integerValue] + [other.amount integerValue];
+    DRGMoney *total = [[DRGMoney alloc] initWithAmount:totalAmount andCurrency:self.currency];
+    return total;
+}
+
 
 #pragma mark - Overwritten
 
@@ -40,7 +62,7 @@
 
 - (BOOL)isEqual:(id)object {
     
-    if (self && object) {
+    if (self && object && [self.currency isEqual:[object currency]]) {
         return  [self amount] == [object amount];
     }
     
@@ -49,8 +71,10 @@
 
 - (NSUInteger)hash {
     
-    return [self amount];
+    if ([self.currency isEqualToString:@"EUR"]) {
+        
+    }
+    return (NSUInteger)[self amount];
 }
-
 
 @end
