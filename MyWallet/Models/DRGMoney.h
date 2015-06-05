@@ -8,19 +8,24 @@
 
 #import <Foundation/Foundation.h>
 
-/** THIS IS AN ABSTRACT CLASS. A SUPERCLASS TO CREATE */
+@class DRGMoney;
+@class DRGBroker;
 
-@interface DRGMoney : NSObject
+@protocol DRGMoney <NSObject>
+
+- (id)initWithAmount:(double)amount andCurrency:(NSString *)currency;
+- (id<DRGMoney>)times:(double)multiplier;
+- (id<DRGMoney>)plus:(DRGMoney *)other;
+- (DRGMoney *)reduceToCurrency:(NSString *)currency withBroker:(DRGBroker *)broker;
+
+@end
+
+@interface DRGMoney : NSObject <DRGMoney>
 
 @property (nonatomic, readonly) NSString *currency;
+@property (nonatomic, readonly) NSNumber *amount;
 
-+ (id)euroWithAmount:(NSInteger)amount;
-+ (id)dollarWithAmount:(NSInteger)amount;
-
-- (instancetype)initWithAmount:(NSInteger)amount andCurrency:(NSString *)currency;
-
-// Operations
-- (DRGMoney *)times:(NSInteger)multiplier;
-- (DRGMoney *)plus:(DRGMoney *)other;
++ (id)euroWithAmount:(double)amount;
++ (id)dollarWithAmount:(double)amount;
 
 @end
