@@ -38,6 +38,52 @@
     self.broker = nil;
 }
 
+#pragma mark - Basics
+
+- (void)testNumberOfAvailableCurrencies {
+    
+    [self.wallet addMoney:[[DRGMoney alloc] initWithAmount:1 andCurrency:@"EUR"]];
+    [self.wallet addMoney:[[DRGMoney alloc] initWithAmount:1 andCurrency:@"USD"]];
+    [self.wallet addMoney:[[DRGMoney alloc] initWithAmount:1 andCurrency:@"GBP"]];
+    [self.wallet addMoney:[[DRGMoney alloc] initWithAmount:1 andCurrency:@"CAD"]];
+    [self.wallet addMoney:[[DRGMoney alloc] initWithAmount:1 andCurrency:@"CAD"]];
+
+    XCTAssertEqual([self.wallet numberOfAvailableCurrencies],
+                   4, @"numberOfAvailableCurrencies shoulb be = 4");
+}
+
+- (void)testAvailableCurrencies {
+    
+    [self.wallet addMoney:[[DRGMoney alloc] initWithAmount:1 andCurrency:@"EUR"]];
+    [self.wallet addMoney:[[DRGMoney alloc] initWithAmount:1 andCurrency:@"USD"]];
+    [self.wallet addMoney:[[DRGMoney alloc] initWithAmount:1 andCurrency:@"GBP"]];
+    [self.wallet addMoney:[[DRGMoney alloc] initWithAmount:1 andCurrency:@"USD"]];
+    [self.wallet addMoney:[[DRGMoney alloc] initWithAmount:1 andCurrency:@"CAD"]];
+    
+    NSArray *currArr = [@[@"EUR",@"USD",@"GBP",@"CAD"] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+    XCTAssertEqualObjects([self.wallet availableCurrencies], currArr,
+                          @"numberOfAvailableCurrencies shoulb be = 2");
+}
+
+- (void)testSubtotalMoneyForCurrency {
+    [self.wallet addMoney:[[DRGMoney alloc] initWithAmount:10 andCurrency:@"EUR"]];
+    [self.wallet addMoney:[[DRGMoney alloc] initWithAmount:7 andCurrency:@"USD"]];
+    [self.wallet addMoney:[[DRGMoney alloc] initWithAmount:22 andCurrency:@"EUR"]];
+    [self.wallet addMoney:[[DRGMoney alloc] initWithAmount:5 andCurrency:@"USD"]];
+    [self.wallet addMoney:[[DRGMoney alloc] initWithAmount:8 andCurrency:@"CAD"]];
+}
+
+- (void)testTotalMoneyWithCurrency {
+    [self.wallet addMoney:[[DRGMoney alloc] initWithAmount:10 andCurrency:@"EUR"]];
+    [self.wallet addMoney:[[DRGMoney alloc] initWithAmount:7 andCurrency:@"USD"]];
+    [self.wallet addMoney:[[DRGMoney alloc] initWithAmount:22 andCurrency:@"EUR"]];
+    [self.wallet addMoney:[[DRGMoney alloc] initWithAmount:5 andCurrency:@"USD"]];
+    [self.wallet addMoney:[[DRGMoney alloc] initWithAmount:8 andCurrency:@"CAD"]];
+    
+    
+}
+
+
 #pragma mark - Addition
 
 - (void)testSimpleAdditionWithExtraction {

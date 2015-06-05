@@ -27,6 +27,24 @@
     return self;
 }
 
+#pragma mark - Currencies
+
+- (NSUInteger)numberOfAvailableCurrencies {
+    return [[self availableCurrencies] count];
+}
+
+- (NSArray *)availableCurrencies {
+    
+    NSMutableArray *currencies = [NSMutableArray array];
+    for (DRGMoney *each in self.moneys) {
+        if (![currencies containsObject:each.currency]) {
+            [currencies addObject:each.currency];
+        }
+    }
+    
+    return [[currencies sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] copy];
+}
+
 #pragma mark - Taking money
 
 - (DRGMoney *)getTotalMoneyWithCurrency:(NSString *)currency {

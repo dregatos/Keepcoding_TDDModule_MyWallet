@@ -12,6 +12,9 @@
 
 @interface DRGWallet : NSObject <DRGMoney>
 
+- (NSUInteger)numberOfAvailableCurrencies;
+- (NSArray *)availableCurrencies;          // returns an array of string. Ex: @[@"EUR",@"USD"...]
+
 - (void)addMoney:(DRGMoney *)money;
 - (void)substractMoney:(DRGMoney *)money;
 

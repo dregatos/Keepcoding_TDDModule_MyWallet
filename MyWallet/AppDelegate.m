@@ -8,6 +8,10 @@
 
 #import "AppDelegate.h"
 
+#import "DRGWallet.h"
+#import "DRGBroker.h"
+#import "DRGWalletTableVC.h"
+
 @interface AppDelegate ()
 
 @end
@@ -18,10 +22,29 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
+    DRGBroker *myBroker = [[DRGBroker alloc] init];
+    [myBroker addRate:1.11178 fromCurrency:@"EUR" toCurrency:@"USD"];
+    [myBroker addRate:1.37364 fromCurrency:@"GBP" toCurrency:@"EUR"];
+    [myBroker addRate:1.52722 fromCurrency:@"GBP" toCurrency:@"USD"];
+
+    DRGWallet *myWallet = [[DRGWallet alloc] init];
+    [myWallet addMoney:[[DRGMoney alloc] initWithAmount:10 andCurrency:@"EUR"]];
+    [myWallet addMoney:[[DRGMoney alloc] initWithAmount:12.25 andCurrency:@"EUR"]];
+    [myWallet addMoney:[[DRGMoney alloc] initWithAmount:2.05 andCurrency:@"EUR"]];
+    [myWallet addMoney:[[DRGMoney alloc] initWithAmount:100 andCurrency:@"USD"]];
+    [myWallet addMoney:[[DRGMoney alloc] initWithAmount:3.5 andCurrency:@"USD"]];
+    [myWallet addMoney:[[DRGMoney alloc] initWithAmount:22.75 andCurrency:@"USD"]];
+    [myWallet addMoney:[[DRGMoney alloc] initWithAmount:11 andCurrency:@"GBP"]];
+    [myWallet addMoney:[[DRGMoney alloc] initWithAmount:6.45 andCurrency:@"GBP"]];
+    [myWallet addMoney:[[DRGMoney alloc] initWithAmount:29 andCurrency:@"GBP"]];
+
+    
+    DRGWalletTableVC *tableVC = [[DRGWalletTableVC alloc] initWithBroker:myBroker andWallet:myWallet];
+    
     // Configure window
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
-//    self.window.rootViewController = rootVC;
+    self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:tableVC];
     [self.window makeKeyAndVisible];
     
     

@@ -13,8 +13,9 @@
 
 @property (nonatomic, readonly) NSMutableDictionary *rates;
 
-- (DRGMoney *)reduce:(id<DRGMoney>)money toCurrency:(NSString *)currency;
 - (void)addRate:(double)rate fromCurrency:(NSString *)fromCurrency toCurrency:(NSString *)toCurrency;
 - (NSString *)keyFromCurrency:(NSString *)fromCurrency toCurrency:(NSString *)toCurrency;
+
+- (DRGMoney *)reduce:(id<DRGMoney>)money toCurrency:(NSString *)currency;
 
 @end

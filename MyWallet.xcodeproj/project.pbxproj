@@ -19,6 +19,8 @@
 		07A7A9BE1B20967100BD420F /* DRGWalletTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 07A7A9BD1B20967100BD420F /* DRGWalletTest.m */; };
 		07A7A9C11B20994600BD420F /* DRGWallet.m in Sources */ = {isa = PBXBuildFile; fileRef = 07A7A9C01B20994600BD420F /* DRGWallet.m */; };
 		07A7A9C21B20994600BD420F /* DRGWallet.m in Sources */ = {isa = PBXBuildFile; fileRef = 07A7A9C01B20994600BD420F /* DRGWallet.m */; };
+		07F1A8EF1B21D35200B6FA1D /* DRGWalletTableVCTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 07F1A8EE1B21D35200B6FA1D /* DRGWalletTableVCTest.m */; };
+		07F1A8F51B21D6CD00B6FA1D /* DRGWalletTableVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 07F1A8F41B21D6CD00B6FA1D /* DRGWalletTableVC.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +52,9 @@
 		07A7A9BD1B20967100BD420F /* DRGWalletTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DRGWalletTest.m; sourceTree = "<group>"; };
 		07A7A9BF1B20994600BD420F /* DRGWallet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DRGWallet.h; sourceTree = "<group>"; };
 		07A7A9C01B20994600BD420F /* DRGWallet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DRGWallet.m; sourceTree = "<group>"; };
+		07F1A8EE1B21D35200B6FA1D /* DRGWalletTableVCTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DRGWalletTableVCTest.m; sourceTree = "<group>"; };
+		07F1A8F31B21D6CD00B6FA1D /* DRGWalletTableVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DRGWalletTableVC.h; sourceTree = "<group>"; };
+		07F1A8F41B21D6CD00B6FA1D /* DRGWalletTableVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DRGWalletTableVC.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +101,7 @@
 				07699A2F1B1CF3EA0094D39F /* Images.xcassets */,
 				07699A311B1CF3EA0094D39F /* LaunchScreen.xib */,
 				07699A4B1B1DA1580094D39F /* Models */,
+				07F1A8EA1B2191A300B6FA1D /* Controllers */,
 				07699A221B1CF3E60094D39F /* Supporting Files */,
 			);
 			path = MyWallet;
@@ -114,6 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				07699A481B1DA0430094D39F /* Models */,
+				07F1A8EB1B2191AF00B6FA1D /* Controllers */,
 				07699A3C1B1CF3EA0094D39F /* Supporting Files */,
 			);
 			path = MyWalletTests;
@@ -148,6 +155,23 @@
 				07A7A9C01B20994600BD420F /* DRGWallet.m */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		07F1A8EA1B2191A300B6FA1D /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				07F1A8F31B21D6CD00B6FA1D /* DRGWalletTableVC.h */,
+				07F1A8F41B21D6CD00B6FA1D /* DRGWalletTableVC.m */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		07F1A8EB1B2191AF00B6FA1D /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				07F1A8EE1B21D35200B6FA1D /* DRGWalletTableVCTest.m */,
+			);
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -251,6 +275,7 @@
 			files = (
 				07699A561B1DB5930094D39F /* DRGMoney.m in Sources */,
 				07699A281B1CF3E90094D39F /* AppDelegate.m in Sources */,
+				07F1A8F51B21D6CD00B6FA1D /* DRGWalletTableVC.m in Sources */,
 				07A7A9C11B20994600BD420F /* DRGWallet.m in Sources */,
 				07A7A9BB1B20310E00BD420F /* DRGBroker.m in Sources */,
 				07699A251B1CF3E90094D39F /* main.m in Sources */,
@@ -261,6 +286,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				07F1A8EF1B21D35200B6FA1D /* DRGWalletTableVCTest.m in Sources */,
 				07A7A9BE1B20967100BD420F /* DRGWalletTest.m in Sources */,
 				07A7A9C21B20994600BD420F /* DRGWallet.m in Sources */,
 				07A7A9B81B202F6300BD420F /* DRGBrokerTest.m in Sources */,

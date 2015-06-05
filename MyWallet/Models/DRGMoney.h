@@ -26,6 +26,8 @@
 + (instancetype)dollarWithAmount:(double)amount;
 
 - (instancetype)initWithAmount:(double)amount andCurrency:(NSString *)currency;
+
+// Operations
 - (instancetype)times:(double)multiplier;
 - (instancetype)plus:(DRGMoney *)other;
 - (instancetype)minus:(DRGMoney *)other;
