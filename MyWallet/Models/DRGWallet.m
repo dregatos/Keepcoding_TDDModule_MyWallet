@@ -27,13 +27,9 @@
     return self;
 }
 
-#pragma mark - Operations
+#pragma mark - Taking money
 
-- (void)addMoney:(DRGMoney *)money {
-    [self.moneys addObject:money];
-}
-
-- (DRGMoney *)takeAllMoneyWithCurrency:(NSString *)currency {
+- (DRGMoney *)getTotalMoneyWithCurrency:(NSString *)currency {
     
     DRGMoney *requested = [[DRGMoney alloc] initWithAmount:0 andCurrency:currency];
     for (DRGMoney *each in self.moneys) {
@@ -45,16 +41,73 @@
     return requested;
 }
 
-#pragma mark - DRGMoney Protocol
-
-- (id<DRGMoney>)times:(double)multiplier {
+- (NSArray *)getMoneyListWithCurrency:(NSString *)currency {
     
-    for (DRGMoney *money in self.moneys) {
-        [money times:multiplier];
+    NSMutableArray *extracted = [NSMutableArray array];
+    for (DRGMoney *each in self.moneys) {
+        if ([each.currency isEqualToString:currency]) {
+            [extracted addObject:each];
+        }
+    }
+
+    return [extracted copy];
+}
+
+
+#pragma mark - Operations
+
+- (void)addMoney:(DRGMoney *)money {
+    [self.moneys addObject:money];
+}
+
+- (void)substractMoney:(DRGMoney *)money {
+    
+    DRGMoney *available = [self getTotalMoneyWithCurrency:money.currency];
+    double pendingSubtrahend = [money.amount doubleValue];
+    
+    if ([available.amount doubleValue] < pendingSubtrahend) {
+        [NSException raise:@"SubtrahendBiggerThanAvailableMoneyException"
+                    format:@"Available money to substract (%f) < requested subtrahend (%f)",
+                                                    [available.amount doubleValue], pendingSubtrahend];
     }
     
-    return self;
+    while (pendingSubtrahend > 0 && available > 0 && [available.amount doubleValue] >= pendingSubtrahend) {
+        for (int i=0; i<[self.moneys count]; i++) {
+            if ([((DRGMoney *)self.moneys[i]).currency isEqualToString:money.currency]) {
+                double canSubstract = [((DRGMoney *)self.moneys[i]).amount doubleValue];
+                if (canSubstract > pendingSubtrahend) {
+                    DRGMoney *substractedMoney = [[DRGMoney alloc] initWithAmount:pendingSubtrahend
+                                                                      andCurrency:money.currency];
+                    pendingSubtrahend -= pendingSubtrahend;
+                    self.moneys[i] = [self.moneys[i] minus:substractedMoney];
+
+                } else {
+                    pendingSubtrahend -= [((DRGMoney *)self.moneys[i]).amount doubleValue];
+                    [self.moneys removeObjectAtIndex:i];
+                }
+                
+                // update conditions
+                available = [self getTotalMoneyWithCurrency:money.currency];
+            }
+        }
+    }
 }
+
+- (void)removeAllMoneys {
+    self.moneys = [NSMutableArray array];
+}
+
+- (void)removeAllMoneysWithCurrency:(NSString *)currency {
+    
+    for (int i=0; i<[self.moneys count]; i++) {
+        DRGMoney *each = self.moneys[i];
+        if ([each.currency isEqualToString:currency]) {
+            [self.moneys removeObjectAtIndex:i];
+        }
+    }
+}
+
+#pragma mark - DRGMoney Protocol
 
 - (DRGMoney *)reduceToCurrency:(NSString *)currency withBroker:(DRGBroker *)broker {
     

@@ -39,10 +39,13 @@
 
 - (void)testDescription {
     XCTAssertEqualObjects([self.oneEuro description],
-                          @"<DRGMoney: EUR1>",
+                          @"<DRGMoney: EUR1.00>",
                           @"Description format should be <DRGMoney: 'Currency_symbol'+'amount'>");
     XCTAssertEqualObjects([self.oneDollar description],
-                          @"<DRGMoney: USD1>",
+                          @"<DRGMoney: USD1.00>",
+                          @"Description format should be <DRGMoney: 'Currency_symbol'+'amount'>");
+    XCTAssertEqualObjects([[DRGMoney euroWithAmount: 10.50] description],
+                          @"<DRGMoney: EUR10.50>",
                           @"Description format should be <DRGMoney: 'Currency_symbol'+'amount'>");
 }
 
@@ -164,5 +167,30 @@
                           @"18€ should be equal to 18.00€");
 }
 
+- (void)testIntSubstraction {
+    XCTAssertEqualObjects([[DRGMoney euroWithAmount:8] minus:[DRGMoney euroWithAmount:2]],
+                          [DRGMoney euroWithAmount:6], @"8€ - 2€ = 6€");
+    XCTAssertEqualObjects([[DRGMoney dollarWithAmount:6] minus:[DRGMoney dollarWithAmount:5]],
+                          [DRGMoney dollarWithAmount:1], @"$6 - $5 = $1");
+}
+
+- (void)testNotIntSubstraction {
+    XCTAssertEqualObjects([[DRGMoney euroWithAmount:8.55] minus:[DRGMoney euroWithAmount:2.1]],
+                          [DRGMoney euroWithAmount:6.45], @"8.55€ - 2.1€ = 6.45€");
+    XCTAssertEqualObjects([[DRGMoney dollarWithAmount:6.9] minus:[DRGMoney dollarWithAmount:5.9]],
+                          [DRGMoney dollarWithAmount:1], @"$6.9 - $5.9 = $1");
+}
+
+#pragma mark - Exceptions
+
+- (void)testThatRaisesExceptionWhenSummandsHaveDifferentCurrency {
+    XCTAssertThrows([[DRGMoney euroWithAmount:0.8] plus:[DRGMoney dollarWithAmount:2]]);
+    XCTAssertThrows([[DRGMoney dollarWithAmount:1.1] plus:[DRGMoney euroWithAmount:3]]);
+}
+
+- (void)testThatRaisesExceptionWhenSubtrahendIsBiggerThanMinuend {
+    XCTAssertThrows([[DRGMoney euroWithAmount:0.8] minus:[DRGMoney euroWithAmount:2]]);
+    XCTAssertThrows([[DRGMoney dollarWithAmount:1.1] minus:[DRGMoney dollarWithAmount:3]]);
+}
 
 @end

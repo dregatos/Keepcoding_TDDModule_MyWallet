@@ -37,9 +37,7 @@
     self.oneDollar = nil;
 }
 
-- (void)testThatNoRateRaisesException {
-    XCTAssertThrows([self.emptyBroker reduce:self.oneDollar toCurrency:@"EUR"]);
-}
+#pragma mark - Reduction
 
 - (void)testReductionToSameCurrency {
     
@@ -49,6 +47,7 @@
     
     XCTAssertEqualObjects(twoDollars, reduced, @"$2 should be = $2 after reducing it");
 }
+
 
 // $10 == 5€ if 2:1
 - (void)testReduction {
@@ -62,6 +61,12 @@
     
     XCTAssertEqualObjects(fiveEuros, converted, @"$10 should be = 5€ if EURUSD = 2");
 
+}
+
+#pragma mark - Exceptions
+
+- (void)testThatNoRateRaisesException {
+    XCTAssertThrows([self.emptyBroker reduce:self.oneDollar toCurrency:@"EUR"]);
 }
 
 @end

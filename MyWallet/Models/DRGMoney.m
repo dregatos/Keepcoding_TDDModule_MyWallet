@@ -48,10 +48,32 @@
 
 - (instancetype)plus:(DRGMoney *)other {
     
+    if (![self.currency isEqualToString:other.currency]) {
+        [NSException raise:@"SummandDifferentCurrencyException"
+                    format:@"Augend (%@) must have same currency than Addend (%@)",self.currency, other.currency];
+        return self;
+    }
+    
     double totalAmount = [self.amount doubleValue] + [other.amount doubleValue];
     DRGMoney *total = [[DRGMoney alloc] initWithAmount:totalAmount andCurrency:self.currency];
     return total;
 }
+
+- (instancetype)minus:(DRGMoney *)other {
+    
+    double newAmount = [self.amount doubleValue] - [other.amount doubleValue];
+
+    if (newAmount < 0) {
+        [NSException raise:@"SubtrahendBiggerThanMinuendException"
+                    format:@"Subtrahend (%f) must be < than Minuend (%f)",[other.amount doubleValue], [self.amount doubleValue]];
+        return self;
+    }
+    
+    DRGMoney *total = [[DRGMoney alloc] initWithAmount:newAmount andCurrency:self.currency];
+    return total;
+}
+
+#pragma mark - DRGMoney Protocol
 
 - (DRGMoney *)reduceToCurrency:(NSString *)currency withBroker:(DRGBroker *)broker {
     
@@ -76,7 +98,8 @@
 #pragma mark - Overwritten
 
 - (NSString *)description {
-    NSString *objDescription = [NSString stringWithFormat:@"%@%li", self.currency, (long)[self.amount doubleValue]];
+    NSString *objDescription = [NSString stringWithFormat:@"%@%@",
+                                self.currency, [NSString stringWithFormat:@"%.02f", [self.amount doubleValue]]];
     return [NSString stringWithFormat:@"<%@: %@>", [self class], objDescription];
 }
 

@@ -13,6 +13,12 @@
 @interface DRGWallet : NSObject <DRGMoney>
 
 - (void)addMoney:(DRGMoney *)money;
-- (DRGMoney *)takeAllMoneyWithCurrency:(NSString *)currency;
+- (void)substractMoney:(DRGMoney *)money;
+
+- (NSArray *)getMoneyListWithCurrency:(NSString *)currency;
+- (DRGMoney *)getTotalMoneyWithCurrency:(NSString *)currency;
+
+- (void)removeAllMoneys;
+- (void)removeAllMoneysWithCurrency:(NSString *)currency;
 
 @end
