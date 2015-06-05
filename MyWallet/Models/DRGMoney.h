@@ -13,9 +13,6 @@
 
 @protocol DRGMoney <NSObject>
 
-- (id)initWithAmount:(double)amount andCurrency:(NSString *)currency;
-- (id<DRGMoney>)times:(double)multiplier;
-- (id<DRGMoney>)plus:(DRGMoney *)other;
 - (DRGMoney *)reduceToCurrency:(NSString *)currency withBroker:(DRGBroker *)broker;
 
 @end
@@ -25,7 +22,11 @@
 @property (nonatomic, readonly) NSString *currency;
 @property (nonatomic, readonly) NSNumber *amount;
 
-+ (id)euroWithAmount:(double)amount;
-+ (id)dollarWithAmount:(double)amount;
++ (instancetype)euroWithAmount:(double)amount;
++ (instancetype)dollarWithAmount:(double)amount;
+
+- (instancetype)initWithAmount:(double)amount andCurrency:(NSString *)currency;
+- (instancetype)times:(double)multiplier;
+- (instancetype)plus:(DRGMoney *)other;
 
 @end

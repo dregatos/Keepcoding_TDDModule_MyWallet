@@ -20,15 +20,15 @@
 
 #pragma mark - init
 
-+ (id)euroWithAmount:(double)amount {
++ (instancetype)euroWithAmount:(double)amount {
     return [[DRGMoney alloc] initWithAmount:amount andCurrency:@"EUR"];
 }
 
-+ (id)dollarWithAmount:(double)amount {
++ (instancetype)dollarWithAmount:(double)amount {
     return [[DRGMoney alloc] initWithAmount:amount andCurrency:@"USD"];
 }
 
-- (id)initWithAmount:(double)amount andCurrency:(NSString *)currency {
+- (instancetype)initWithAmount:(double)amount andCurrency:(NSString *)currency {
     
     if (self = [super init]) {
         double rounded = round (amount * 100) / 100.0;
@@ -40,13 +40,13 @@
 
 #pragma mark - Operations
 
-- (id<DRGMoney>)times:(double)multiplier {
+- (instancetype)times:(double)multiplier {
     
     DRGMoney *new = [[DRGMoney alloc] initWithAmount:[self.amount doubleValue] * multiplier andCurrency:self.currency];
     return new;
 }
 
-- (id<DRGMoney>)plus:(DRGMoney *)other {
+- (instancetype)plus:(DRGMoney *)other {
     
     double totalAmount = [self.amount doubleValue] + [other.amount doubleValue];
     DRGMoney *total = [[DRGMoney alloc] initWithAmount:totalAmount andCurrency:self.currency];
@@ -72,7 +72,6 @@
         return [[DRGMoney alloc] initWithAmount:newAmount andCurrency:currency];
     }
 }
-
 
 #pragma mark - Overwritten
 
