@@ -22,7 +22,7 @@
 - (instancetype)init {
     
     if (self = [super init]) {
-        _moneys = [NSMutableArray array];
+        _moneys = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -45,7 +45,7 @@
     return [[currencies sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] copy];
 }
 
-#pragma mark - Taking money
+#pragma mark - Quering
 
 - (DRGMoney *)getTotalMoneyWithCurrency:(NSString *)currency {
     
@@ -59,7 +59,7 @@
     return requested;
 }
 
-- (NSArray *)getMoneyListWithCurrency:(NSString *)currency {
+- (NSArray *)getMoneysWithCurrency:(NSString *)currency {
     
     NSMutableArray *extracted = [NSMutableArray array];
     for (DRGMoney *each in self.moneys) {
@@ -111,11 +111,7 @@
     }
 }
 
-- (void)removeAllMoneys {
-    self.moneys = [NSMutableArray array];
-}
-
-- (void)removeAllMoneysWithCurrency:(NSString *)currency {
+- (void)substractAllMoneysWithCurrency:(NSString *)currency {
     
     for (int i=0; i<[self.moneys count]; i++) {
         DRGMoney *each = self.moneys[i];
@@ -123,6 +119,10 @@
             [self.moneys removeObjectAtIndex:i];
         }
     }
+}
+
+- (void)emptyWallet {
+    self.moneys = [NSMutableArray array];
 }
 
 #pragma mark - DRGMoney Protocol

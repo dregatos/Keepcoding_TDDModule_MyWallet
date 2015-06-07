@@ -23,21 +23,13 @@
     // Override point for customization after application launch.
     
     DRGBroker *myBroker = [[DRGBroker alloc] init];
+    // TODO: Add more currencies. For now only works with EUR, USD and GBP
     [myBroker addRate:1.11178 fromCurrency:@"EUR" toCurrency:@"USD"];
     [myBroker addRate:1.37364 fromCurrency:@"GBP" toCurrency:@"EUR"];
     [myBroker addRate:1.52722 fromCurrency:@"GBP" toCurrency:@"USD"];
 
     DRGWallet *myWallet = [[DRGWallet alloc] init];
-    [myWallet addMoney:[[DRGMoney alloc] initWithAmount:10 andCurrency:@"EUR"]];
-    [myWallet addMoney:[[DRGMoney alloc] initWithAmount:12.25 andCurrency:@"EUR"]];
-    [myWallet addMoney:[[DRGMoney alloc] initWithAmount:2.05 andCurrency:@"EUR"]];
-    [myWallet addMoney:[[DRGMoney alloc] initWithAmount:100 andCurrency:@"USD"]];
-    [myWallet addMoney:[[DRGMoney alloc] initWithAmount:3.5 andCurrency:@"USD"]];
-    [myWallet addMoney:[[DRGMoney alloc] initWithAmount:22.75 andCurrency:@"USD"]];
-    [myWallet addMoney:[[DRGMoney alloc] initWithAmount:11 andCurrency:@"GBP"]];
-    [myWallet addMoney:[[DRGMoney alloc] initWithAmount:6.45 andCurrency:@"GBP"]];
-    [myWallet addMoney:[[DRGMoney alloc] initWithAmount:29 andCurrency:@"GBP"]];
-
+//    [self addDummyDataToWallet:myWallet];
     
     DRGWalletTableVC *tableVC = [[DRGWalletTableVC alloc] initWithBroker:myBroker andWallet:myWallet];
     
@@ -46,10 +38,6 @@
     self.window.backgroundColor = [UIColor whiteColor];
     self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:tableVC];
     [self.window makeKeyAndVisible];
-    
-    
-    
-    
     
     return YES;
 }
@@ -75,5 +63,20 @@
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
+
+#pragma mark - Helpers
+
+- (void)addDummyDataToWallet:(DRGWallet *)aWallet {
+    [aWallet addMoney:[[DRGMoney alloc] initWithAmount:10 andCurrency:@"EUR"]];
+    [aWallet addMoney:[[DRGMoney alloc] initWithAmount:12.25 andCurrency:@"EUR"]];
+    [aWallet addMoney:[[DRGMoney alloc] initWithAmount:2.05 andCurrency:@"EUR"]];
+    [aWallet addMoney:[[DRGMoney alloc] initWithAmount:100 andCurrency:@"USD"]];
+    [aWallet addMoney:[[DRGMoney alloc] initWithAmount:3.5 andCurrency:@"USD"]];
+    [aWallet addMoney:[[DRGMoney alloc] initWithAmount:22.75 andCurrency:@"USD"]];
+    [aWallet addMoney:[[DRGMoney alloc] initWithAmount:11 andCurrency:@"GBP"]];
+    [aWallet addMoney:[[DRGMoney alloc] initWithAmount:6.45 andCurrency:@"GBP"]];
+    [aWallet addMoney:[[DRGMoney alloc] initWithAmount:29 andCurrency:@"GBP"]];
+}
+
 
 @end

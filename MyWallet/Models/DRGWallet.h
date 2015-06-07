@@ -16,12 +16,12 @@
 - (NSArray *)availableCurrencies;          // returns an array of string. Ex: @[@"EUR",@"USD"...]
 
 - (void)addMoney:(DRGMoney *)money;
-- (void)substractMoney:(DRGMoney *)money;
+- (void)substractMoney:(DRGMoney *)money;  // == takeMoney:
+- (void)substractAllMoneysWithCurrency:(NSString *)currency;
 
-- (NSArray *)getMoneyListWithCurrency:(NSString *)currency;
+- (NSArray *)getMoneysWithCurrency:(NSString *)currency;
 - (DRGMoney *)getTotalMoneyWithCurrency:(NSString *)currency;
 
-- (void)removeAllMoneys;
-- (void)removeAllMoneysWithCurrency:(NSString *)currency;
+- (void)emptyWallet;
 
 @end

@@ -60,29 +60,10 @@
     [self.wallet addMoney:[[DRGMoney alloc] initWithAmount:1 andCurrency:@"USD"]];
     [self.wallet addMoney:[[DRGMoney alloc] initWithAmount:1 andCurrency:@"CAD"]];
     
-    NSArray *currArr = [@[@"EUR",@"USD",@"GBP",@"CAD"] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+    NSArray *currArr = [self.wallet availableCurrencies];
     XCTAssertEqualObjects([self.wallet availableCurrencies], currArr,
                           @"numberOfAvailableCurrencies shoulb be = 2");
 }
-
-- (void)testSubtotalMoneyForCurrency {
-    [self.wallet addMoney:[[DRGMoney alloc] initWithAmount:10 andCurrency:@"EUR"]];
-    [self.wallet addMoney:[[DRGMoney alloc] initWithAmount:7 andCurrency:@"USD"]];
-    [self.wallet addMoney:[[DRGMoney alloc] initWithAmount:22 andCurrency:@"EUR"]];
-    [self.wallet addMoney:[[DRGMoney alloc] initWithAmount:5 andCurrency:@"USD"]];
-    [self.wallet addMoney:[[DRGMoney alloc] initWithAmount:8 andCurrency:@"CAD"]];
-}
-
-- (void)testTotalMoneyWithCurrency {
-    [self.wallet addMoney:[[DRGMoney alloc] initWithAmount:10 andCurrency:@"EUR"]];
-    [self.wallet addMoney:[[DRGMoney alloc] initWithAmount:7 andCurrency:@"USD"]];
-    [self.wallet addMoney:[[DRGMoney alloc] initWithAmount:22 andCurrency:@"EUR"]];
-    [self.wallet addMoney:[[DRGMoney alloc] initWithAmount:5 andCurrency:@"USD"]];
-    [self.wallet addMoney:[[DRGMoney alloc] initWithAmount:8 andCurrency:@"CAD"]];
-    
-    
-}
-
 
 #pragma mark - Addition
 
@@ -90,7 +71,7 @@
     
     [self.wallet addMoney:[DRGMoney euroWithAmount: 50]];
     
-    XCTAssertEqualObjects([[self.wallet getMoneyListWithCurrency: @"EUR"] objectAtIndex:0],
+    XCTAssertEqualObjects([[self.wallet getMoneysWithCurrency: @"EUR"] objectAtIndex:0],
                           [DRGMoney euroWithAmount: 50],
                           @"Wallet's money with EUR at index 0 should be = €50");
 }
@@ -109,10 +90,10 @@
     [self.wallet addMoney:[DRGMoney euroWithAmount: 50]];
     [self.wallet addMoney:[DRGMoney euroWithAmount: 5]];
     
-    XCTAssertEqualObjects([[self.wallet getMoneyListWithCurrency: @"EUR"] objectAtIndex:0],
+    XCTAssertEqualObjects([[self.wallet getMoneysWithCurrency: @"EUR"] objectAtIndex:0],
                           [DRGMoney euroWithAmount: 50],
                           @"Wallet's money with EUR at index 0 should be = €50");
-    XCTAssertEqualObjects([[self.wallet getMoneyListWithCurrency: @"EUR"] objectAtIndex:1],
+    XCTAssertEqualObjects([[self.wallet getMoneysWithCurrency: @"EUR"] objectAtIndex:1],
                           [DRGMoney euroWithAmount: 5],
                           @"Wallet's money with EUR at index 1 should be = €5");
 }
@@ -132,10 +113,10 @@
     [self.wallet addMoney:[DRGMoney dollarWithAmount: 34]];
     [self.wallet addMoney:[DRGMoney euroWithAmount: 5]];
     
-    XCTAssertEqualObjects([[self.wallet getMoneyListWithCurrency: @"USD"] objectAtIndex:0],
+    XCTAssertEqualObjects([[self.wallet getMoneysWithCurrency: @"USD"] objectAtIndex:0],
                           [DRGMoney dollarWithAmount: 34],
                           @"Wallet's money with EUR at index 0 should be = $34");
-    XCTAssertEqualObjects([[self.wallet getMoneyListWithCurrency: @"EUR"] objectAtIndex:0],
+    XCTAssertEqualObjects([[self.wallet getMoneysWithCurrency: @"EUR"] objectAtIndex:0],
                           [DRGMoney euroWithAmount: 5],
                           @"Wallet's money with USD at index 0 should be = €5");
 }
@@ -187,9 +168,9 @@
     
     [self.wallet substractMoney:[DRGMoney euroWithAmount: 65]];
     
-    XCTAssertEqual([[self.wallet getMoneyListWithCurrency: @"EUR"] count],
+    XCTAssertEqual([[self.wallet getMoneysWithCurrency: @"EUR"] count],
                    1, @"Wallet's money with EUR count should be = 1");
-    XCTAssertEqualObjects([[self.wallet getMoneyListWithCurrency: @"EUR"] objectAtIndex:0],
+    XCTAssertEqualObjects([[self.wallet getMoneysWithCurrency: @"EUR"] objectAtIndex:0],
                           [DRGMoney euroWithAmount: 20.5],
                           @"Wallet's money with EUR at index 0 should be = €20.5");
 }
@@ -202,7 +183,7 @@
     [self.wallet addMoney:[DRGMoney dollarWithAmount: 35]];
     
     // Clean
-    [self.wallet removeAllMoneys];
+    [self.wallet emptyWallet];
     
     XCTAssertEqualObjects([self.wallet getTotalMoneyWithCurrency: @"USD"],
                           [DRGMoney dollarWithAmount: 0],
@@ -218,14 +199,14 @@
     [self.wallet addMoney:[DRGMoney dollarWithAmount: 35]];
     
     // Clean
-    [self.wallet removeAllMoneysWithCurrency: @"USD"];
+    [self.wallet substractAllMoneysWithCurrency: @"USD"];
     
-    XCTAssertEqual([[self.wallet getMoneyListWithCurrency:@"USD"] count],
+    XCTAssertEqual([[self.wallet getMoneysWithCurrency:@"USD"] count],
                    0, @"Wallet should have any USD");
     XCTAssertEqualObjects([self.wallet getTotalMoneyWithCurrency: @"USD"],
                           [DRGMoney dollarWithAmount: 0],
                           @"Wallet should have $0");
-    XCTAssertEqual([[self.wallet getMoneyListWithCurrency:@"EUR"] count],
+    XCTAssertEqual([[self.wallet getMoneysWithCurrency:@"EUR"] count],
                    1, @"Wallet should have one EUR Money");
     XCTAssertEqualObjects([self.wallet getTotalMoneyWithCurrency: @"EUR"],
                           [DRGMoney euroWithAmount: 50],

@@ -24,6 +24,7 @@
 
 + (instancetype)euroWithAmount:(double)amount;
 + (instancetype)dollarWithAmount:(double)amount;
++ (instancetype)poundWithAmount:(double)amount;
 
 - (instancetype)initWithAmount:(double)amount andCurrency:(NSString *)currency;
 

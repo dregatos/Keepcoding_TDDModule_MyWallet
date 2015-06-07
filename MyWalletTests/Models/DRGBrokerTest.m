@@ -42,7 +42,6 @@
 - (void)testReductionToSameCurrency {
     
     DRGMoney *twoDollars = [DRGMoney dollarWithAmount:2];
-    
     DRGMoney *reduced = [self.emptyBroker reduce:twoDollars toCurrency: @"USD"];
     
     XCTAssertEqualObjects(twoDollars, reduced, @"$2 should be = $2 after reducing it");

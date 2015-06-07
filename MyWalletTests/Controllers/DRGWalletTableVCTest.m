@@ -13,6 +13,7 @@
 #import "DRGMoney.h"
 #import "DRGBroker.h"
 #import "DRGWalletTableVC.h"
+#import "NotificationKeys.h"
 
 @interface DRGWalletTableVCTest : XCTestCase
 
@@ -77,16 +78,16 @@
     NSArray *currencies = [self.myWallet availableCurrencies];
 
     XCTAssertEqual([tableVC tableView:nil numberOfRowsInSection:0],
-                   [[self.myWallet getMoneyListWithCurrency: currencies[0]] count] + 1,
+                   [[self.myWallet getMoneysWithCurrency: currencies[0]] count] + 1,
                    @"Number of rows should be = 'numberOfMoneys + 1'");
     XCTAssertEqual([tableVC tableView:nil numberOfRowsInSection:1],
-                   [[self.myWallet getMoneyListWithCurrency: currencies[1]] count] + 1,
+                   [[self.myWallet getMoneysWithCurrency: currencies[1]] count] + 1,
                    @"Number of rows should be = 'numberOfMoneys + 1'");
     XCTAssertEqual([tableVC tableView:nil numberOfRowsInSection:2],
-                   [[self.myWallet getMoneyListWithCurrency: currencies[2]] count] + 1,
+                   [[self.myWallet getMoneysWithCurrency: currencies[2]] count] + 1,
                    @"Number of rows should be = 'numberOfMoneys + 1'");
     XCTAssertEqual([tableVC tableView:nil numberOfRowsInSection:3],
-                   [[self.myWallet getMoneyListWithCurrency: currencies[3]] count] + 1,
+                   [[self.myWallet getMoneysWithCurrency: currencies[3]] count] + 1,
                    @"Number of rows should be = 'numberOfMoneys + 1'");
 }
 
@@ -97,8 +98,60 @@
     NSArray *currencies = [self.myWallet availableCurrencies];
 
     XCTAssertEqual([tableVC tableView:nil numberOfRowsInSection:0],
-                   [[self.myWallet getMoneyListWithCurrency: [currencies lastObject]] count] + 1,
+                   [[self.myWallet getMoneysWithCurrency: [currencies lastObject]] count] + 1,
                    @"Number of rows should be = 'numberOfMoneys + 1'");
 }
+
+- (void)testNotifyMoneyWasAddedUpdateWalletAndTable {
+    
+    [self.myWallet addMoney:[DRGMoney euroWithAmount:10.5]];
+
+    DRGWalletTableVC *tableVC = [[DRGWalletTableVC alloc] initWithBroker:self.myBroker andWallet:self.myWallet];
+    NSInteger previousCount = [[self.myWallet getMoneysWithCurrency:@"EUR"] count];
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
+    
+    [tableVC performSelector:@selector(registerForNotifications) withObject:nil];
+    
+#pragma clang diagnostic pop
+    
+    DRGMoney *money = [DRGMoney euroWithAmount:2.22];
+    [[NSNotificationCenter defaultCenter] postNotificationName:DID_ADD_MONEY_NOTIFICATION
+                                                        object:nil
+                                                      userInfo:@{MONEY_KEY:money}];
+    NSInteger newCount = [[self.myWallet getMoneysWithCurrency:@"EUR"] count];
+
+    XCTAssertEqual(previousCount+1, newCount, @"New count of EUR moneys should be equal to previous count + 1");
+    XCTAssertEqual([tableVC tableView:nil numberOfRowsInSection:0], newCount+1,
+                   @"numberOfRowsInSection should be equal to new count of moneys with EUR + 1");
+}
+
+- (void)testNotifyMoneyWasRemovedUpdateWalletAndTable {
+    
+    [self.myWallet addMoney:[DRGMoney euroWithAmount:10]];
+    [self.myWallet addMoney:[DRGMoney euroWithAmount:5]];
+
+    DRGWalletTableVC *tableVC = [[DRGWalletTableVC alloc] initWithBroker:self.myBroker andWallet:self.myWallet];
+    NSInteger previousCount = [[self.myWallet getMoneysWithCurrency:@"EUR"] count];
+    
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
+    
+    [tableVC performSelector:@selector(registerForNotifications) withObject:nil];
+    
+#pragma clang diagnostic pop
+    
+    DRGMoney *money = [DRGMoney euroWithAmount:10];
+    [[NSNotificationCenter defaultCenter] postNotificationName:DID_REMOVE_MONEY_NOTIFICATION
+                                                        object:nil
+                                                      userInfo:@{MONEY_KEY:money}];
+    NSInteger newCount = [[self.myWallet getMoneysWithCurrency:@"EUR"] count];
+    
+    XCTAssertEqual(previousCount+1, newCount, @"New count of EUR moneys should be equal to previous count + 1");
+    XCTAssertEqual([tableVC tableView:nil numberOfRowsInSection:0], newCount+1,
+                   @"numberOfRowsInSection should be equal to new count of moneys with EUR + 1");
+}
+
 
 @end

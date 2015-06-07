@@ -15,6 +15,8 @@
 
 @property (nonatomic, strong) DRGMoney *oneEuro;
 @property (nonatomic, strong) DRGMoney *oneDollar;
+@property (nonatomic, strong) DRGMoney *onePound;
+
 @end
 
 @implementation DRGMoneyTest
@@ -25,6 +27,7 @@
     
     self.oneEuro = [DRGMoney euroWithAmount:1];
     self.oneDollar = [DRGMoney dollarWithAmount:1];
+    self.onePound = [DRGMoney poundWithAmount:1];
 }
 
 - (void)tearDown {
@@ -33,6 +36,7 @@
     
     self.oneEuro = nil;
     self.oneDollar = nil;
+    self.onePound = nil;
 }
 
 #pragma mark - Basics
@@ -63,6 +67,9 @@
     // DOLLAR
     XCTAssertEqualObjects(@"USD", [self.oneDollar currency],
                           @"The currency of dollar should be USD");
+    // POUND
+    XCTAssertEqualObjects(@"GBP", [self.onePound currency],
+                          @"The currency of pound should be GBP");
 }
 
 - (void)testDifferentCurrencies {

@@ -28,6 +28,10 @@
     return [[DRGMoney alloc] initWithAmount:amount andCurrency:@"USD"];
 }
 
++ (instancetype)poundWithAmount:(double)amount {
+    return [[DRGMoney alloc] initWithAmount:amount andCurrency:@"GBP"];
+}
+
 - (instancetype)initWithAmount:(double)amount andCurrency:(NSString *)currency {
     
     if (self = [super init]) {

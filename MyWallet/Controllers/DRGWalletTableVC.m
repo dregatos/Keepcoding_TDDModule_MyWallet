@@ -7,9 +7,14 @@
 //
 
 #import "DRGWalletTableVC.h"
+#import "DRGMoneyVC.h"
+
 #import "DRGWallet.h"
 #import "DRGMoney.h"
 #import "DRGBroker.h"
+
+#import "NotificationKeys.h"
+
 
 @interface DRGWalletTableVC ()
 
@@ -32,20 +37,76 @@
     return self;
 }
 
+#pragma mark - View Events
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
+    self.title = @"My Wallet";
+
+    // NavBar buttons
+    UIBarButtonItem *takeBtn = [[UIBarButtonItem alloc] initWithTitle:@"Take"
+                                                                style:UIBarButtonItemStylePlain
+                                                               target:self
+                                                               action:@selector(takeBtnPressed:)];
+    self.navigationItem.leftBarButtonItem = takeBtn;
     
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    UIBarButtonItem *addBtn = [[UIBarButtonItem alloc] initWithTitle:@"Add"
+                                                                style:UIBarButtonItemStylePlain
+                                                               target:self
+                                                               action:@selector(addBtnPressed:)];
+    self.navigationItem.rightBarButtonItem = addBtn;
+    
+    // Notifications **********************
+    [self registerForNotifications];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+#pragma mark - NSNotification
+
+- (void)dealloc {
+    [self unregisterForNotifications];
+}
+
+- (void)registerForNotifications {
+    // Add your notification observer here
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(notifyMoneyWasAdded:)
+                                                 name:DID_ADD_MONEY_NOTIFICATION
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(notifyMoneyWasRemoved:)
+                                                 name:DID_REMOVE_MONEY_NOTIFICATION
+                                               object:nil];
+}
+
+- (void)unregisterForNotifications {
+    // Clear out _all_ observations that this object was making
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)notifyMoneyWasAdded:(NSNotification *)notification {
+    DRGMoney *money = (DRGMoney *)[notification.userInfo objectForKey:MONEY_KEY];
+    [self.wallet addMoney:money];
+    [self.tableView reloadData];
+}
+
+- (void)notifyMoneyWasRemoved:(NSNotification *)notification {
+    DRGMoney *money = (DRGMoney *)[notification.userInfo objectForKey:MONEY_KEY];
+    [self.wallet substractMoney:money];
+    [self.tableView reloadData];
+}
+
+#pragma mark - IBActions
+
+- (void)takeBtnPressed:(UIBarButtonItem *)barBtn {
+    DRGMoneyVC *moneyVC = [[DRGMoneyVC alloc] init];
+    [self.navigationController pushViewController:moneyVC animated:YES];
+}
+
+- (void)addBtnPressed:(UIBarButtonItem *)barBtn {
+    DRGMoneyVC *moneyVC = [[DRGMoneyVC alloc] init];
+    moneyVC.adding = YES;
+    [self.navigationController pushViewController:moneyVC animated:YES];
 }
 
 #pragma mark - Table view data source
@@ -61,7 +122,7 @@
         return 1;
     } else {
         NSArray *currencies = [self.wallet availableCurrencies];
-        return [[self.wallet getMoneyListWithCurrency:currencies[section]] count] + 1;  // +1 for the total amount
+        return [[self.wallet getMoneysWithCurrency:currencies[section]] count] + 1;  // +1 for the total amount
     }
 }
 
@@ -77,8 +138,16 @@
     // Configure the cell...
     DRGMoney *money = [self moneyAtIndexPath:indexPath];
     // Regular Cell
-    cell.textLabel.text = [NSString stringWithFormat:@"%@%@", money.currency,
-                           [NSString stringWithFormat:@"%.02f", [money.amount doubleValue]]];
+    cell.textLabel.text = [NSString stringWithFormat:@"%.02f", [money.amount doubleValue]];
+    cell.textLabel.textAlignment = NSTextAlignmentRight;
+    
+    if (indexPath.section == [self.wallet numberOfAvailableCurrencies]) {
+        cell.textLabel.font = [UIFont boldSystemFontOfSize:18.0];
+    } else if (indexPath.row == [[self.wallet getMoneysWithCurrency:money.currency] count]) {
+        cell.textLabel.font = [UIFont boldSystemFontOfSize:16.0];
+    } else {
+        cell.textLabel.font = [UIFont systemFontOfSize:15.0];
+    }
     
     return cell;
 }
@@ -103,12 +172,11 @@
     } else {
         NSArray *currencies = [self.wallet availableCurrencies];
         
-        if (indexPath.row == [[self.wallet getMoneyListWithCurrency:currencies[indexPath.section]] count] ) {
+        if (indexPath.row == [[self.wallet getMoneysWithCurrency:currencies[indexPath.section]] count] ) {
             return [self.wallet getTotalMoneyWithCurrency:currencies[indexPath.section]];
         }
         
-        
-        NSArray *moneyList = [self.wallet getMoneyListWithCurrency:currencies[indexPath.section]];
+        NSArray *moneyList = [self.wallet getMoneysWithCurrency:currencies[indexPath.section]];
         return moneyList[indexPath.row];
     }
 }
