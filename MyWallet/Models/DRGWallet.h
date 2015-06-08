@@ -16,8 +16,9 @@
 - (NSArray *)availableCurrencies;          // returns an array of string. Ex: @[@"EUR",@"USD"...]
 
 - (void)addMoney:(DRGMoney *)money;
-- (void)substractMoney:(DRGMoney *)money;  // == takeMoney:
+- (void)substractMoney:(DRGMoney *)money withResult:(void(^)(BOOL success, NSError *error))resultBlock;  // == takeMoney:
 - (void)substractAllMoneysWithCurrency:(NSString *)currency;
+- (BOOL)canSubstractMoney:(DRGMoney *)money;
 
 - (NSArray *)getMoneysWithCurrency:(NSString *)currency;
 - (DRGMoney *)getTotalMoneyWithCurrency:(NSString *)currency;

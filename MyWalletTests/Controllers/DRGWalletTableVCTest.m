@@ -148,7 +148,7 @@
                                                       userInfo:@{MONEY_KEY:money}];
     NSInteger newCount = [[self.myWallet getMoneysWithCurrency:@"EUR"] count];
     
-    XCTAssertEqual(previousCount+1, newCount, @"New count of EUR moneys should be equal to previous count + 1");
+    XCTAssertEqual(previousCount-1, newCount, @"New count of EUR moneys should be equal to previous count + 1");
     XCTAssertEqual([tableVC tableView:nil numberOfRowsInSection:0], newCount+1,
                    @"numberOfRowsInSection should be equal to new count of moneys with EUR + 1");
 }

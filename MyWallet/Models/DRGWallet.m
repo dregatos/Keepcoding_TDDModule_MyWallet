@@ -78,36 +78,48 @@
     [self.moneys addObject:money];
 }
 
-- (void)substractMoney:(DRGMoney *)money {
+- (void)substractMoney:(DRGMoney *)money withResult:(void(^)(BOOL success, NSError *error))resultBlock {
     
     DRGMoney *available = [self getTotalMoneyWithCurrency:money.currency];
     double pendingSubtrahend = [money.amount doubleValue];
     
-    if ([available.amount doubleValue] < pendingSubtrahend) {
-        [NSException raise:@"SubtrahendBiggerThanAvailableMoneyException"
-                    format:@"Available money to substract (%f) < requested subtrahend (%f)",
-                                                    [available.amount doubleValue], pendingSubtrahend];
-    }
-    
-    while (pendingSubtrahend > 0 && available > 0 && [available.amount doubleValue] >= pendingSubtrahend) {
-        for (int i=0; i<[self.moneys count]; i++) {
-            if ([((DRGMoney *)self.moneys[i]).currency isEqualToString:money.currency]) {
-                double canSubstract = [((DRGMoney *)self.moneys[i]).amount doubleValue];
-                if (canSubstract > pendingSubtrahend) {
-                    DRGMoney *substractedMoney = [[DRGMoney alloc] initWithAmount:pendingSubtrahend
-                                                                      andCurrency:money.currency];
-                    pendingSubtrahend -= pendingSubtrahend;
-                    self.moneys[i] = [self.moneys[i] minus:substractedMoney];
-
-                } else {
-                    pendingSubtrahend -= [((DRGMoney *)self.moneys[i]).amount doubleValue];
-                    [self.moneys removeObjectAtIndex:i];
+    if ([self canSubstractMoney:money]) {
+        while (pendingSubtrahend > 0 && available > 0 && [available.amount doubleValue] >= pendingSubtrahend) {
+            for (int i=0; i<[self.moneys count]; i++) {
+                if ([((DRGMoney *)self.moneys[i]).currency isEqualToString:money.currency]) {
+                    double canSubstract = [((DRGMoney *)self.moneys[i]).amount doubleValue];
+                    if (canSubstract > pendingSubtrahend) {
+                        DRGMoney *substractedMoney = [[DRGMoney alloc] initWithAmount:pendingSubtrahend
+                                                                          andCurrency:money.currency];
+                        pendingSubtrahend -= pendingSubtrahend;
+                        self.moneys[i] = [self.moneys[i] minus:substractedMoney];
+                        
+                    } else {
+                        pendingSubtrahend -= [((DRGMoney *)self.moneys[i]).amount doubleValue];
+                        [self.moneys removeObjectAtIndex:i];
+                    }
+                    
+                    // update conditions
+                    available = [self getTotalMoneyWithCurrency:money.currency];
                 }
-                
-                // update conditions
-                available = [self getTotalMoneyWithCurrency:money.currency];
             }
         }
+        
+        if(resultBlock) resultBlock(YES,nil);
+        
+    } else {
+        NSString *desc = @"Operation was unsuccessful.";
+        NSString *reason = [NSString stringWithFormat:@"Your wallet only got %@%@", available.currency, available.amount];
+        NSString *sugg = [NSString stringWithFormat:@"Try with an amount < %@", available.description];
+        NSDictionary *userInfo = @{
+                                   NSLocalizedDescriptionKey: NSLocalizedString(desc, nil),
+                                   NSLocalizedFailureReasonErrorKey: NSLocalizedString(reason, nil),
+                                   NSLocalizedRecoverySuggestionErrorKey: NSLocalizedString(sugg, nil)
+                                   };
+        NSError *error = [NSError errorWithDomain:@"MYWALLET_SUBSTRACTION_ERROR"
+                                             code:001
+                                         userInfo:userInfo];
+        if(resultBlock) resultBlock(NO,error);
     }
 }
 
@@ -123,6 +135,17 @@
 
 - (void)emptyWallet {
     self.moneys = [NSMutableArray array];
+}
+
+- (BOOL)canSubstractMoney:(DRGMoney *)money {
+    DRGMoney *available = [self getTotalMoneyWithCurrency:money.currency];
+    double pendingSubtrahend = [money.amount doubleValue];
+    
+    if ([available.amount doubleValue] > pendingSubtrahend) {
+        return YES;
+    }
+    
+    return NO;
 }
 
 #pragma mark - DRGMoney Protocol

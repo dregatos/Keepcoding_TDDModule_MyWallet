@@ -92,11 +92,21 @@
 - (void)testDollarEquality {
     XCTAssertEqualObjects([DRGMoney dollarWithAmount: 10],
                           [DRGMoney dollarWithAmount: 5 * 2],
-                          @"10€ should be equal to 5€ * 2");
+                          @"$10 should be equal to $5 * 2");
     XCTAssertNotEqualObjects([DRGMoney dollarWithAmount: 10],
                              [DRGMoney dollarWithAmount: 5],
                              @"$10 should be different to $5");
     XCTAssertNotEqualObjects([DRGMoney dollarWithAmount: 0], nil, @"0€ should be different to nil");
+}
+
+- (void)testPoundEquality {
+    XCTAssertEqualObjects([DRGMoney poundWithAmount: 10],
+                          [DRGMoney poundWithAmount: 5 * 2],
+                          @"10pounds should be equal to 5pounds * 2");
+    XCTAssertNotEqualObjects([DRGMoney poundWithAmount: 10],
+                             [DRGMoney poundWithAmount: 5],
+                             @"10pounds should be different to 5pounds");
+    XCTAssertNotEqualObjects([DRGMoney poundWithAmount: 0], nil, @"0pounds should be different to nil");
 }
 
 - (void)testHash {
@@ -114,6 +124,11 @@
     XCTAssertEqual([[DRGMoney euroWithAmount: 5] hash],
                    [[DRGMoney euroWithAmount: 5] hash],
                    @"Two different 5€ must have same hash");
+    
+#pragma mark - TODO
+//    XCTAssertNotEqual([[DRGMoney euroWithAmount: 5] hash],
+//                   [[DRGMoney dollarWithAmount: 5] hash],
+//                   @"5€ must have a different hash than $5");
 }
 
 - (void)testIntegerDoubleEquality {

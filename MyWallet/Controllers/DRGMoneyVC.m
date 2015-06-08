@@ -14,9 +14,22 @@
 
 @interface DRGMoneyVC ()
 
+@property (nonatomic, readwrite) DRGMoney *money;
+
 @end
 
 @implementation DRGMoneyVC
+
+#pragma mark - Init
+
+- (instancetype)initWithMoney:(DRGMoney *)aMoney {
+    
+    if (self = [super initWithNibName:nil bundle:nil]) {
+        _money = aMoney;
+    }
+    
+    return self;
+}
 
 #pragma mark - View Events
 
@@ -56,11 +69,11 @@
     NSInteger index = self.currencyControl.selectedSegmentIndex;
     NSString *currency = [self.currencyControl titleForSegmentAtIndex:index];
     double amount = [self.inputTxtField.text doubleValue];
-    DRGMoney *money = [[DRGMoney alloc] initWithAmount:amount andCurrency:currency];
+    self.money = [[DRGMoney alloc] initWithAmount:amount andCurrency:currency];
     
     // Notify if it is adding or removing money
     NSString *notificationName = self.isAdding ? DID_ADD_MONEY_NOTIFICATION : DID_REMOVE_MONEY_NOTIFICATION;
-    [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:self userInfo:@{MONEY_KEY:money}];
+    [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:self userInfo:@{MONEY_KEY:self.money}];
     
     // Go back
     [self.navigationController popToRootViewControllerAnimated:YES];

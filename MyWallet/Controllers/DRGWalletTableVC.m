@@ -57,6 +57,11 @@
                                                                action:@selector(addBtnPressed:)];
     self.navigationItem.rightBarButtonItem = addBtn;
     
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
     // Notifications **********************
     [self registerForNotifications];
 }
@@ -92,19 +97,28 @@
 
 - (void)notifyMoneyWasRemoved:(NSNotification *)notification {
     DRGMoney *money = (DRGMoney *)[notification.userInfo objectForKey:MONEY_KEY];
-    [self.wallet substractMoney:money];
-    [self.tableView reloadData];
+    [self.wallet substractMoney:money withResult:^(BOOL success, NSError *error) {
+        if (success) {
+            [self.tableView reloadData];
+        } else {
+            [[[UIAlertView alloc] initWithTitle:error.localizedDescription
+                                        message:error.localizedFailureReason
+                                       delegate:nil
+                              cancelButtonTitle:NSLocalizedString(@"OK", nil)
+                              otherButtonTitles:nil, nil] show];
+        }
+    }];
 }
 
 #pragma mark - IBActions
 
 - (void)takeBtnPressed:(UIBarButtonItem *)barBtn {
-    DRGMoneyVC *moneyVC = [[DRGMoneyVC alloc] init];
+    DRGMoneyVC *moneyVC = [[DRGMoneyVC alloc] initWithMoney:nil];
     [self.navigationController pushViewController:moneyVC animated:YES];
 }
 
 - (void)addBtnPressed:(UIBarButtonItem *)barBtn {
-    DRGMoneyVC *moneyVC = [[DRGMoneyVC alloc] init];
+    DRGMoneyVC *moneyVC = [[DRGMoneyVC alloc] initWithMoney:nil];
     moneyVC.adding = YES;
     [self.navigationController pushViewController:moneyVC animated:YES];
 }

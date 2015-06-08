@@ -109,7 +109,7 @@
 
 - (BOOL)isEqual:(id)object {
     
-    if (self && object && ([object class] == [self class]) && [self.currency isEqual:[object currency]]) {
+    if (self && object && [self.currency isEqual:[object currency]]) {
 //        NSLog(@"self.amount = %f",[self.amount doubleValue]);
 //        NSLog(@"money.amount = %f",[((DRGMoney *)object).amount doubleValue]);
         return  [self.amount doubleValue] == [((DRGMoney *)object).amount doubleValue];

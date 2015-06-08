@@ -140,7 +140,7 @@
     
     [self.wallet addMoney:[DRGMoney euroWithAmount: 50]];
     
-    [self.wallet substractMoney:[DRGMoney euroWithAmount: 25]];
+    [self.wallet substractMoney:[DRGMoney euroWithAmount: 25] withResult:nil];
     
     XCTAssertEqualObjects([self.wallet getTotalMoneyWithCurrency: @"EUR"],
                           [DRGMoney euroWithAmount: 25],
@@ -152,7 +152,7 @@
     [self.wallet addMoney:[DRGMoney euroWithAmount: 50]];
     [self.wallet addMoney:[DRGMoney euroWithAmount: 35.5]];
     
-    [self.wallet substractMoney:[DRGMoney euroWithAmount: 65]];
+    [self.wallet substractMoney:[DRGMoney euroWithAmount: 65] withResult:nil];
     
     XCTAssertEqualObjects([self.wallet getTotalMoneyWithCurrency: @"EUR"],
                           [DRGMoney euroWithAmount: 20.5],
@@ -166,13 +166,38 @@
     [self.wallet addMoney:[DRGMoney euroWithAmount: 10]];
     [self.wallet addMoney:[DRGMoney euroWithAmount: 35.5]];
     
-    [self.wallet substractMoney:[DRGMoney euroWithAmount: 65]];
+    [self.wallet substractMoney:[DRGMoney euroWithAmount: 65] withResult:nil];
     
     XCTAssertEqual([[self.wallet getMoneysWithCurrency: @"EUR"] count],
                    1, @"Wallet's money with EUR count should be = 1");
     XCTAssertEqualObjects([[self.wallet getMoneysWithCurrency: @"EUR"] objectAtIndex:0],
                           [DRGMoney euroWithAmount: 20.5],
                           @"Wallet's money with EUR at index 0 should be = €20.5");
+}
+
+- (void)testThatSubstractionALargerAmountOfMoneyThanItIsAvailableDoesntCrash {
+    
+    [self.wallet addMoney:[DRGMoney euroWithAmount: 50]];
+    
+    XCTAssertNoThrow([self.wallet substractMoney:[DRGMoney euroWithAmount: 65] withResult:nil]);
+}
+
+- (void)testSubstractionResult {
+    
+    [self.wallet addMoney:[DRGMoney euroWithAmount: 50]];
+    
+    DRGMoney *available = [self.wallet getTotalMoneyWithCurrency:@"EUR"];
+    NSString *desc = @"Operation was unsuccessful.";
+    NSString *reason = [NSString stringWithFormat:@"Your wallet only got %@%@", available.currency, available.amount];
+    NSString *sugg = [NSString stringWithFormat:@"Try with an amount < %@", available.description];
+
+    [self.wallet substractMoney:[DRGMoney euroWithAmount: 65]
+                     withResult:^(BOOL success, NSError *error) {
+                         XCTAssertFalse(success, @"50€ - 65€ shouldn't success");
+                         XCTAssertEqualObjects(error.localizedDescription, desc);
+                         XCTAssertEqualObjects(error.localizedFailureReason, reason);
+                         XCTAssertEqualObjects(error.localizedRecoverySuggestion, sugg);
+    }];
 }
 
 #pragma mark - Deletion
@@ -226,15 +251,6 @@
     DRGMoney *reduced = [self.broker reduce:self.wallet toCurrency:@"USD"];
     
     XCTAssertEqualObjects(reduced, [DRGMoney dollarWithAmount:64.8], @"€40 + $20 = $64.8 if EURUSD = 1.12");
-}
-
-#pragma mark - Exceptions
-
-- (void)testThatRaisesExceptionWhenUserTriesToExtractALargerAmountOfMoneyThanItIsAvailable {
-    
-    [self.wallet addMoney:[DRGMoney euroWithAmount: 50]];
-
-    XCTAssertThrows([self.wallet substractMoney:[DRGMoney euroWithAmount: 65]]);
 }
 
 @end
