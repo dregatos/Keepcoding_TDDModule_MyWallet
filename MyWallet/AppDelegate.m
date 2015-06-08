@@ -12,6 +12,9 @@
 #import "DRGBroker.h"
 #import "DRGWalletTableVC.h"
 
+#import <Fabric/Fabric.h>
+#import <Crashlytics/Crashlytics.h>
+
 @interface AppDelegate ()
 
 @end
@@ -21,6 +24,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    [Fabric with:@[CrashlyticsKit]];
     
     DRGBroker *myBroker = [[DRGBroker alloc] init];
     // TODO: Add more currencies. For now only works with EUR, USD and GBP

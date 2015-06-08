@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0761A24B1B25B41600302B07 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0761A2491B25B41600302B07 /* Fabric.framework */; };
+		0761A24C1B25B41600302B07 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0761A24A1B25B41600302B07 /* Crashlytics.framework */; };
 		07699A251B1CF3E90094D39F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 07699A241B1CF3E90094D39F /* main.m */; };
 		07699A281B1CF3E90094D39F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 07699A271B1CF3E90094D39F /* AppDelegate.m */; };
 		07699A301B1CF3EA0094D39F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 07699A2F1B1CF3EA0094D39F /* Images.xcassets */; };
@@ -39,6 +41,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0761A2491B25B41600302B07 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
+		0761A24A1B25B41600302B07 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		07699A1F1B1CF3E60094D39F /* MyWallet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyWallet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		07699A231B1CF3E90094D39F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		07699A241B1CF3E90094D39F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -75,6 +79,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0761A24C1B25B41600302B07 /* Crashlytics.framework in Frameworks */,
+				0761A24B1B25B41600302B07 /* Fabric.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -198,6 +204,8 @@
 		961DAE19CAF6FE0207C2077C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0761A2491B25B41600302B07 /* Fabric.framework */,
+				0761A24A1B25B41600302B07 /* Crashlytics.framework */,
 				368C82FDE4AD1CF638720294 /* libPods-MyWalletTests.a */,
 			);
 			name = Frameworks;
@@ -222,6 +230,7 @@
 				07699A1B1B1CF3E60094D39F /* Sources */,
 				07699A1C1B1CF3E60094D39F /* Frameworks */,
 				07699A1D1B1CF3E60094D39F /* Resources */,
+				0761A2481B25B3DE00302B07 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -310,6 +319,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		0761A2481B25B3DE00302B07 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./Fabric.framework/run c6c24cac6091d2f3bdeb319ddb99883e689524ee 467610b1e6447a2715f9d7d555b8dc717097060670d8af8b7fd789af1a5669b7";
+		};
 		5E1ED7F225B35E10B18575AA /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -478,6 +500,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = MyWallet/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -488,6 +514,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = MyWallet/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
