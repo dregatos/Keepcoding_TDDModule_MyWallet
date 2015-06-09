@@ -132,7 +132,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    if (section == [self.wallet numberOfAvailableCurrencies]) {  // last section
+    if ([self isLastSection:section]) {  // last section
         return 1;
     } else {
         NSArray *currencies = [self.wallet availableCurrencies];
@@ -155,9 +155,9 @@
     cell.textLabel.text = [NSString stringWithFormat:@"%.02f", [money.amount doubleValue]];
     cell.textLabel.textAlignment = NSTextAlignmentRight;
     
-    if (indexPath.section == [self.wallet numberOfAvailableCurrencies]) {
+    if ([self shouldMoney:money beShownInTotalSection:indexPath]) {
         cell.textLabel.font = [UIFont boldSystemFontOfSize:18.0];
-    } else if (indexPath.row == [[self.wallet getMoneysWithCurrency:money.currency] count]) {
+    } else if ([self shouldMoney:money beShownInTotalRow:indexPath]) {
         cell.textLabel.font = [UIFont boldSystemFontOfSize:16.0];
     } else {
         cell.textLabel.font = [UIFont systemFontOfSize:15.0];
@@ -170,7 +170,7 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     
-    if (section == [self.wallet numberOfAvailableCurrencies]) {  // last section
+    if ([self isLastSection:section]) {  // last section
         return @"TOTAL in EUROS";
     } else {
         NSArray *currencies = [self.wallet availableCurrencies];
@@ -193,6 +193,19 @@
         NSArray *moneyList = [self.wallet getMoneysWithCurrency:currencies[indexPath.section]];
         return moneyList[indexPath.row];
     }
+}
+
+- (BOOL)shouldMoney:(DRGMoney *)money beShownInTotalSection:(NSIndexPath *)indexPath {
+    return indexPath.section == [self.wallet numberOfAvailableCurrencies];
+}
+
+- (BOOL)shouldMoney:(DRGMoney *)money beShownInTotalRow:(NSIndexPath *)indexPath {
+    return indexPath.row == [[self.wallet getMoneysWithCurrency:money.currency] count];
+}
+
+- (BOOL)isLastSection:(NSUInteger)section {
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:section];
+    return [self shouldMoney:nil beShownInTotalSection:indexPath];
 }
 
 @end

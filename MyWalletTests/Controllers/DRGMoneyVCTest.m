@@ -31,7 +31,7 @@
     [super tearDown];
 }
 
-- (void)testMoneyCreation {
+- (void)testSaveBtnCreateMoney {
     
     DRGMoneyVC *moneyVC = [[DRGMoneyVC alloc] initWithMoney:nil];
     moneyVC.adding = YES;

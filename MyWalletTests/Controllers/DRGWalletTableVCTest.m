@@ -44,7 +44,7 @@
 #pragma mark - Data Source
 
 // SECTIONS
-- (void)testThatNumberOfSectionsIfEmptyWalletIsEqualToOne {
+- (void)testThatNumberOfSectionsIfWalletIsEmptyIsEqualToOne {
     
     DRGWalletTableVC *tableVC = [[DRGWalletTableVC alloc] initWithBroker:self.myBroker andWallet:self.myWallet];
     
@@ -102,7 +102,7 @@
                    @"Number of rows should be = 'numberOfMoneys + 1'");
 }
 
-- (void)testNotifyMoneyWasAddedUpdateWalletAndTable {
+- (void)testMoneyWasAddedNotificationUpdateWalletAndTable {
     
     [self.myWallet addMoney:[DRGMoney euroWithAmount:10.5]];
 
@@ -127,7 +127,7 @@
                    @"numberOfRowsInSection should be equal to new count of moneys with EUR + 1");
 }
 
-- (void)testNotifyMoneyWasRemovedUpdateWalletAndTable {
+- (void)testMoneyWasRemovedNotificationUpdateWalletAndTable {
     
     [self.myWallet addMoney:[DRGMoney euroWithAmount:10]];
     [self.myWallet addMoney:[DRGMoney euroWithAmount:5]];
