@@ -13,6 +13,8 @@
 #import "DRGMoney.h"
 #import "DRGBroker.h"
 #import "DRGWalletTableVC.h"
+
+#import "DRGFakeNotificationCenter.h"
 #import "NotificationKeys.h"
 
 @interface DRGWalletTableVCTest : XCTestCase
@@ -102,6 +104,31 @@
                    @"Number of rows should be = 'numberOfMoneys + 1'");
 }
 
+#pragma mark - Notifications
+
+-(void)testDidSuscribeToNotifications {
+    
+    DRGFakeNotificationCenter *fakeNC = [[DRGFakeNotificationCenter alloc] init];
+    
+    DRGWalletTableVC *tableVC = [[DRGWalletTableVC alloc] initWithBroker:self.myBroker andWallet:self.myWallet];
+    
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
+    
+    [tableVC performSelector:@selector(registerForNotifications:) withObject:fakeNC];
+    
+#pragma clang diagnostic pop
+    
+    NSDictionary *obs = [fakeNC observers];
+    id observer1 = [obs objectForKey:DID_ADD_MONEY_NOTIFICATION];
+    id observer2 = [obs objectForKey:DID_REMOVE_MONEY_NOTIFICATION];
+
+    XCTAssertEqualObjects(observer1, tableVC, @"tableVC must be suscribed to DID_ADD_MONEY_NOTIFICATION");
+    XCTAssertEqualObjects(observer2, tableVC, @"tableVC must be suscribed to DID_REMOVE_MONEY_NOTIFICATION");
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:tableVC];
+}
+
 - (void)testMoneyWasAddedNotificationUpdateWalletAndTable {
     
     [self.myWallet addMoney:[DRGMoney euroWithAmount:10.5]];
@@ -112,19 +139,21 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wundeclared-selector"
     
-    [tableVC performSelector:@selector(registerForNotifications) withObject:nil];
+    [tableVC performSelector:@selector(registerForNotifications:) withObject:[NSNotificationCenter defaultCenter]];
     
 #pragma clang diagnostic pop
     
     DRGMoney *money = [DRGMoney euroWithAmount:2.22];
     [[NSNotificationCenter defaultCenter] postNotificationName:DID_ADD_MONEY_NOTIFICATION
-                                                        object:nil
-                                                      userInfo:@{MONEY_KEY:money}];
+                          object:nil
+                        userInfo:@{MONEY_KEY:money}];
     NSInteger newCount = [[self.myWallet getMoneysWithCurrency:@"EUR"] count];
 
     XCTAssertEqual(previousCount+1, newCount, @"New count of EUR moneys should be equal to previous count + 1");
     XCTAssertEqual([tableVC tableView:nil numberOfRowsInSection:0], newCount+1,
                    @"numberOfRowsInSection should be equal to new count of moneys with EUR + 1");
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:tableVC];
 }
 
 - (void)testMoneyWasRemovedNotificationUpdateWalletAndTable {
@@ -138,19 +167,21 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wundeclared-selector"
     
-    [tableVC performSelector:@selector(registerForNotifications) withObject:nil];
+    [tableVC performSelector:@selector(registerForNotifications:) withObject:[NSNotificationCenter defaultCenter]];
     
 #pragma clang diagnostic pop
     
     DRGMoney *money = [DRGMoney euroWithAmount:10];
     [[NSNotificationCenter defaultCenter] postNotificationName:DID_REMOVE_MONEY_NOTIFICATION
-                                                        object:nil
-                                                      userInfo:@{MONEY_KEY:money}];
+                          object:nil
+                        userInfo:@{MONEY_KEY:money}];
     NSInteger newCount = [[self.myWallet getMoneysWithCurrency:@"EUR"] count];
     
     XCTAssertEqual(previousCount-1, newCount, @"New count of EUR moneys should be equal to previous count + 1");
     XCTAssertEqual([tableVC tableView:nil numberOfRowsInSection:0], newCount+1,
                    @"numberOfRowsInSection should be equal to new count of moneys with EUR + 1");
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:tableVC];
 }
 
 

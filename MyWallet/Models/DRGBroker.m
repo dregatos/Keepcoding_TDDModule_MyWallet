@@ -33,8 +33,10 @@
 
 - (void)addRate:(double)rate fromCurrency:(NSString *)fromCurrency toCurrency:(NSString *)toCurrency {
     
-    [self.rates setObject:@(rate) forKey:[self keyFromCurrency:fromCurrency toCurrency:toCurrency]];
-    [self.rates setObject:@(1.0/rate) forKey:[self keyFromCurrency:toCurrency toCurrency:fromCurrency]];
+    if (fromCurrency && toCurrency && ![fromCurrency isEqualToString:@""] && ![toCurrency isEqualToString:@""]) {
+        [self.rates setObject:@(rate) forKey:[self keyFromCurrency:fromCurrency toCurrency:toCurrency]];
+        [self.rates setObject:@(1.0/rate) forKey:[self keyFromCurrency:toCurrency toCurrency:fromCurrency]];
+    }
 }
 
 - (NSString *)keyFromCurrency:(NSString *)fromCurrency toCurrency:(NSString *)toCurrency {

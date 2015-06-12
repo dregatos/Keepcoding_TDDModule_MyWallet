@@ -65,18 +65,33 @@
 
 - (void)saveBtnPressed:(UIBarButtonItem *)barBtn {
     
-    // Create money
-    NSInteger index = self.currencyControl.selectedSegmentIndex;
-    NSString *currency = [self.currencyControl titleForSegmentAtIndex:index];
-    double amount = [self.inputTxtField.text doubleValue];
-    self.money = [[DRGMoney alloc] initWithAmount:amount andCurrency:currency];
-    
-    // Notify if it is adding or removing money
-    NSString *notificationName = self.isAdding ? DID_ADD_MONEY_NOTIFICATION : DID_REMOVE_MONEY_NOTIFICATION;
-    [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:self userInfo:@{MONEY_KEY:self.money}];
+    [self notifyMoney:self.money toObservers:[NSNotificationCenter defaultCenter]];
     
     // Go back
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
+
+#pragma mark - Notification
+
+- (void)notifyMoney:(DRGMoney *)money toObservers:(NSNotificationCenter *)nc {
+    // Notify if it is adding or removing money
+    if (money) {
+        NSString *notificationName = self.isAdding ? DID_ADD_MONEY_NOTIFICATION : DID_REMOVE_MONEY_NOTIFICATION;
+        [nc postNotificationName:notificationName object:self userInfo:@{MONEY_KEY:money}];
+    } else {
+        // TODO - show an alert
+    }
+}
+
+#pragma mark - Helpers
+
+- (DRGMoney *)money {
+    NSInteger index = self.currencyControl.selectedSegmentIndex;
+    NSString *currency = [self.currencyControl titleForSegmentAtIndex:index];
+    double amount = [self.inputTxtField.text doubleValue];
+    
+    return [[DRGMoney alloc] initWithAmount:amount andCurrency:currency];
+}
+
 
 @end

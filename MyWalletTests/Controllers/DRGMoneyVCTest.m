@@ -13,6 +13,7 @@
 #import "DRGMoney.h"
 
 #import <OCMock/OCMock.h>
+#import "DRGFakeNotificationCenter.h"
 #import "NotificationKeys.h"
 
 @interface DRGMoneyVCTest : XCTestCase
@@ -31,37 +32,57 @@
     [super tearDown];
 }
 
-- (void)testSaveBtnCreateMoney {
-    
-    DRGMoneyVC *moneyVC = [[DRGMoneyVC alloc] initWithMoney:nil];
-    moneyVC.adding = YES;
-    
-    UITextField *inputTxtField = [[UITextField alloc] init];
-    inputTxtField.text = @"50";
-    UISegmentedControl *segCtrl = [[UISegmentedControl alloc] initWithItems:@[@"EUR", @"USD", @"GBP"]];
-    segCtrl.selectedSegmentIndex = 2;
-    
-    moneyVC.inputTxtField = inputTxtField;
-    moneyVC.currencyControl = segCtrl;
-    
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wundeclared-selector"
-    
-    [moneyVC performSelector:@selector(saveBtnPressed:) withObject:nil];
-    
-#pragma clang diagnostic pop
-    
-    XCTAssertEqualObjects(moneyVC.money, [DRGMoney poundWithAmount:50], @"Money added should be equal to GBP50");
-}
+#pragma mark - IBActions
 
-
-- (void)testSaveBtnTriggerNotificationInAddingMode {
+- (void)testSaveBtnCreateRightMoney {
     
     DRGMoneyVC *moneyVC = [[DRGMoneyVC alloc] initWithMoney:nil];
     moneyVC.adding = YES;
     
     UITextField *inputTxtField = [[UITextField alloc] init];
     inputTxtField.text = @"13.13";
+    UISegmentedControl *segCtrl = [[UISegmentedControl alloc] initWithItems:@[@"EUR", @"USD", @"GBP"]];
+    segCtrl.selectedSegmentIndex = 2;
+    
+    moneyVC.inputTxtField = inputTxtField;
+    moneyVC.currencyControl = segCtrl;
+    
+    XCTAssertEqualObjects(moneyVC.money, [DRGMoney poundWithAmount:13.13], @"Money added should be equal to GBP13.13");
+}
+
+#pragma mark - Notifications (using OCMock)
+
+- (void)testNotifyUserWantsAddMoney {
+    
+    DRGMoneyVC *moneyVC = [[DRGMoneyVC alloc] initWithMoney:nil];
+    moneyVC.adding = YES;
+    
+    NSString *notificationName = @"DID_ADD_MONEY_NOTIFICATION";
+    id observerMock = [OCMockObject observerMock];
+    [[NSNotificationCenter defaultCenter] addMockObserver:observerMock name:notificationName object:moneyVC];
+    [[observerMock expect] notificationWithName:notificationName object:moneyVC userInfo:[OCMArg any]];
+     
+ #pragma clang diagnostic push
+ #pragma clang diagnostic ignored "-Wundeclared-selector"
+ 
+    [moneyVC performSelector:@selector(notifyMoney:toObservers:)
+                  withObject:[DRGMoney poundWithAmount:1]
+                  withObject:[NSNotificationCenter defaultCenter]];
+    
+ #pragma clang diagnostic pop
+     
+     [observerMock verify];
+     [[NSNotificationCenter defaultCenter] removeObserver:observerMock];
+}
+
+- (void)testUserInfoNotificationWhenUserWantsAddMoney {
+    
+    DRGMoney *notifiedMoney = [DRGMoney euroWithAmount:3.75];
+    DRGMoneyVC *moneyVC = [[DRGMoneyVC alloc] initWithMoney:nil];
+    moneyVC.adding = YES;
+    
+    UITextField *inputTxtField = [[UITextField alloc] init];
+    inputTxtField.text = @"3.75";
     UISegmentedControl *segCtrl = [[UISegmentedControl alloc] initWithItems:@[@"EUR", @"USD", @"GBP"]];
     segCtrl.selectedSegmentIndex = 0;
     
@@ -72,50 +93,18 @@
     id observerMock = [OCMockObject observerMock];
     [[NSNotificationCenter defaultCenter] addMockObserver:observerMock name:notificationName object:moneyVC];
     [[observerMock expect] notificationWithName:notificationName object:moneyVC
-     userInfo:[OCMArg checkWithBlock:^BOOL(NSDictionary *userInfo) {
-        id value = [userInfo objectForKey:MONEY_KEY];
-        XCTAssertEqualObjects([DRGMoney euroWithAmount:13.13], value, @"");
-        return YES;
-    }]];
-     
- #pragma clang diagnostic push
- #pragma clang diagnostic ignored "-Wundeclared-selector"
- 
-     [moneyVC performSelector:@selector(saveBtnPressed:) withObject:nil];
- 
- #pragma clang diagnostic pop
-     
-     [observerMock verify];
-     [[NSNotificationCenter defaultCenter] removeObserver:observerMock];
-}
-
-- (void)testSaveBtnTriggerNotificationInSubtractionMode {
-    
-    DRGMoneyVC *moneyVC = [[DRGMoneyVC alloc] initWithMoney:nil];
-    moneyVC.adding = NO;
-    
-    UITextField *inputTxtField = [[UITextField alloc] init];
-    inputTxtField.text = @"13.13";
-    UISegmentedControl *segCtrl = [[UISegmentedControl alloc] initWithItems:@[@"EUR", @"USD", @"GBP"]];
-    segCtrl.selectedSegmentIndex = 0;
-    
-    moneyVC.inputTxtField = inputTxtField;
-    moneyVC.currencyControl = segCtrl;
-    
-    NSString *notificationName = @"DID_REMOVE_MONEY_NOTIFICATION";
-    id observerMock = [OCMockObject observerMock];
-    [[NSNotificationCenter defaultCenter] addMockObserver:observerMock name:notificationName object:moneyVC];
-    [[observerMock expect] notificationWithName:notificationName object:moneyVC
                                        userInfo:[OCMArg checkWithBlock:^BOOL(NSDictionary *userInfo) {
         id value = [userInfo objectForKey:MONEY_KEY];
-        XCTAssertEqualObjects([DRGMoney euroWithAmount:13.13], value, @"");
+        XCTAssertEqualObjects(notifiedMoney, value, @"Notified money should be equal to EUR3.75");
         return YES;
     }]];
     
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wundeclared-selector"
     
-    [moneyVC performSelector:@selector(saveBtnPressed:) withObject:nil];
+    [moneyVC performSelector:@selector(notifyMoney:toObservers:)
+                  withObject:notifiedMoney
+                  withObject:[NSNotificationCenter defaultCenter]];
     
 #pragma clang diagnostic pop
     

@@ -27,6 +27,12 @@
     return self;
 }
 
+#pragma mark - Moneys
+
+- (NSUInteger)numberOfMoneys {
+    return [self.moneys count];
+}
+
 #pragma mark - Currencies
 
 - (NSUInteger)numberOfAvailableCurrencies {
@@ -75,7 +81,9 @@
 #pragma mark - Operations
 
 - (void)addMoney:(DRGMoney *)money {
-    [self.moneys addObject:money];
+    if (money) {
+        [self.moneys addObject:money];
+    }
 }
 
 - (void)substractMoney:(DRGMoney *)money withResult:(void(^)(BOOL success, NSError *error))resultBlock {

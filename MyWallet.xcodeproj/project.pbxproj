@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0713ECDE1B2AC5AF00029279 /* DRGFakeNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0713ECDD1B2AC5AF00029279 /* DRGFakeNotificationCenter.m */; };
 		0761A24B1B25B41600302B07 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0761A2491B25B41600302B07 /* Fabric.framework */; };
 		0761A24C1B25B41600302B07 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0761A24A1B25B41600302B07 /* Crashlytics.framework */; };
 		07699A251B1CF3E90094D39F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 07699A241B1CF3E90094D39F /* main.m */; };
@@ -41,6 +42,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0713ECDC1B2AC5AF00029279 /* DRGFakeNotificationCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DRGFakeNotificationCenter.h; sourceTree = "<group>"; };
+		0713ECDD1B2AC5AF00029279 /* DRGFakeNotificationCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DRGFakeNotificationCenter.m; sourceTree = "<group>"; };
 		0761A2491B25B41600302B07 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		0761A24A1B25B41600302B07 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		07699A1F1B1CF3E60094D39F /* MyWallet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyWallet.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -95,6 +98,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0713ECD91B2AC51300029279 /* Fakes */ = {
+			isa = PBXGroup;
+			children = (
+				0713ECDC1B2AC5AF00029279 /* DRGFakeNotificationCenter.h */,
+				0713ECDD1B2AC5AF00029279 /* DRGFakeNotificationCenter.m */,
+			);
+			path = Fakes;
+			sourceTree = "<group>";
+		};
 		07699A161B1CF3E60094D39F = {
 			isa = PBXGroup;
 			children = (
@@ -142,6 +154,7 @@
 		07699A3B1B1CF3EA0094D39F /* MyWalletTests */ = {
 			isa = PBXGroup;
 			children = (
+				0713ECD91B2AC51300029279 /* Fakes */,
 				07699A481B1DA0430094D39F /* Models */,
 				07F1A8EB1B2191AF00B6FA1D /* Controllers */,
 				07699A3C1B1CF3EA0094D39F /* Supporting Files */,
@@ -383,6 +396,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0713ECDE1B2AC5AF00029279 /* DRGFakeNotificationCenter.m in Sources */,
 				079FC17B1B25780F00CC608A /* DRGMoney.m in Sources */,
 				07F1A8EF1B21D35200B6FA1D /* DRGWalletTableVCTest.m in Sources */,
 				07A7A9BE1B20967100BD420F /* DRGWalletTest.m in Sources */,

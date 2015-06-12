@@ -77,6 +77,19 @@
                              @"Different currencies must not be equal!!");
 }
 
+- (void)testCreateMoneyWithoutAmount {
+    double amount;
+    XCTAssertEqualObjects([[DRGMoney alloc] initWithAmount:amount andCurrency:@"EUR"],
+                          [DRGMoney euroWithAmount:0],
+                          @"Euro initialization without amount should return EUR0");
+}
+
+- (void)testCreateMoneyWithoutCurrency {
+    XCTAssertEqualObjects([[DRGMoney alloc] initWithAmount:10 andCurrency:nil],
+                          nil,
+                          @"Euro initialization without currency should return 'nil' ");
+}
+
 #pragma mark - Equality
 
 - (void)testEuroEquality {

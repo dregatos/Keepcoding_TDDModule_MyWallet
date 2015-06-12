@@ -67,6 +67,22 @@
 
 #pragma mark - Addition
 
+- (void)testAddNilMoney {
+    
+    [self.wallet addMoney:nil];
+
+    XCTAssertEqual([self.wallet numberOfMoneys], 0,
+                   @"Number of Moneys in the wallet should be 0");
+}
+
+- (void)testSimpleAddition {
+    
+    [self.wallet addMoney:[DRGMoney euroWithAmount: 50]];
+    
+    XCTAssertEqual([self.wallet numberOfMoneys], 1,
+                   @"Number of Moneys in the wallet should be 1");
+}
+
 - (void)testSimpleAdditionWithExtraction {
     
     [self.wallet addMoney:[DRGMoney euroWithAmount: 50]];

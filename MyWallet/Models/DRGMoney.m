@@ -34,6 +34,10 @@
 
 - (instancetype)initWithAmount:(double)amount andCurrency:(NSString *)currency {
     
+    if (!currency || [currency isEqualToString:@""]) {
+        return nil;
+    }
+    
     if (self = [super init]) {
         double rounded = round (amount * 100) / 100.0;
         _amount = [NSNumber numberWithDouble:rounded];

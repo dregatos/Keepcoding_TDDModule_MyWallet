@@ -63,30 +63,30 @@
     [super viewWillAppear:animated];
     
     // Notifications **********************
-    [self registerForNotifications];
+    [self registerForNotifications:[NSNotificationCenter defaultCenter]];
 }
 
 #pragma mark - NSNotification
 
 - (void)dealloc {
-    [self unregisterForNotifications];
+    [self unregisterForNotifications:[NSNotificationCenter defaultCenter]];
 }
 
-- (void)registerForNotifications {
+- (void)registerForNotifications:(NSNotificationCenter *)nc {
     // Add your notification observer here
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(notifyMoneyWasAdded:)
-                                                 name:DID_ADD_MONEY_NOTIFICATION
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(notifyMoneyWasRemoved:)
-                                                 name:DID_REMOVE_MONEY_NOTIFICATION
-                                               object:nil];
+    [nc addObserver:self
+           selector:@selector(notifyMoneyWasAdded:)
+               name:DID_ADD_MONEY_NOTIFICATION
+             object:nil];
+    [nc addObserver:self
+           selector:@selector(notifyMoneyWasRemoved:)
+               name:DID_REMOVE_MONEY_NOTIFICATION
+             object:nil];
 }
 
-- (void)unregisterForNotifications {
+- (void)unregisterForNotifications:(NSNotificationCenter *)nc {
     // Clear out _all_ observations that this object was making
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [nc removeObserver:self];
 }
 
 - (void)notifyMoneyWasAdded:(NSNotification *)notification {
